@@ -29,20 +29,20 @@ export default function MainApp() {
           />
         </AuthStack.Navigator>
       ) : (
-        <AuthStack.Navigator>
-          <AuthStack.Screen
-            name="BookTicket"
-            component={BookTicket}
-            options={{title: 'Book Ticket'}}
-            headerTruncatedBackTitle
-          />
-          <AuthStack.Screen
+        <TicketStack.Navigator>
+          <TicketStack.Screen
             name="HomePage"
             component={HomePage}
             options={{title: 'Home Page'}}
             headerTruncatedBackTitle
           />
-        </AuthStack.Navigator>
+          <TicketStack.Screen
+            name="BookTicket"
+            component={BookTicket}
+            options={{title: 'Book Ticket'}}
+            headerTruncatedBackTitle
+          />
+        </TicketStack.Navigator>
       )}
     </NavigationContainer>
   );
