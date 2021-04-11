@@ -35,7 +35,6 @@ export default function BookTicket() {
             placeholderStyle={{fontSize: 18}}
             searchable
           />
-
           <Icon name="swap-horiz" style={{paddingHorizontal: 10}} size={40} />
           <DropDownPicker
             items={[
@@ -46,11 +45,7 @@ export default function BookTicket() {
               {label: 'Ram mandir', value: 'rm'},
             ]}
             containerStyle={{height: 45, flex: 1}}
-            style={{
-              backgroundColor: '#f7f6e7',
-              borderWidth: 1,
-              borderColor: '#314e52',
-            }}
+            style={{backgroundColor: '#f7f6e7'}}
             placeholder="Going to"
             placeholderStyle={{fontSize: 18}}
             searchable
