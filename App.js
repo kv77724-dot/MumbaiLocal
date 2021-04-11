@@ -3,6 +3,8 @@ import LogIn from './src/components/LogIn';
 import SignUp from './src/components/SignUp';
 import BookTicket from './src/components/BookTicket';
 import HomePage from './src/components/HomePage';
+import TicketHistory from './src/components/TicketHistory';
+import Profile from './src/components/Profile';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -40,6 +42,18 @@ export default function MainApp() {
             name="BookTicket"
             component={BookTicket}
             options={{title: 'Book Ticket'}}
+            headerTruncatedBackTitle
+          />
+          <TicketStack.Screen
+            name="TicketHistory"
+            component={TicketHistory}
+            options={{title: 'Booked Ticket History'}}
+            headerTruncatedBackTitle
+          />
+          <TicketStack.Screen
+            name="Profile"
+            component={Profile}
+            options={{title: 'Your Profile'}}
             headerTruncatedBackTitle
           />
         </TicketStack.Navigator>

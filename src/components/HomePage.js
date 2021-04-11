@@ -10,12 +10,12 @@ export default function HomePage({navigation}) {
         </TouchableOpacity>
       </View>
       <View style={styles.button}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('TicketHistory')}>
           <Text style={styles.textSign}>Ticket History</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.button}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
           <Text style={styles.textSign}>Profile</Text>
         </TouchableOpacity>
       </View>
