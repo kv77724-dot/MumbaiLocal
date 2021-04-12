@@ -8,6 +8,13 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+var users = [
+  {email: 'kv77724@gmail.com', password: '123456'},
+  {email: 'deepakvermillion191@gmail.com', password: '123456'},
+  {email: 'sumit23181998gmail.com', password: '123456'},
+];
 
 export default function LogIn({navigation}) {
   const [email, setEmail] = useState('');
@@ -16,6 +23,28 @@ export default function LogIn({navigation}) {
   const [loginErr, setLoginErr] = useState('');
 
   console.log('EMail', email);
+
+  const storeData = async value => {
+    try {
+      await AsyncStorage.setItem('@token', value);
+      console.log('Token to async', value);
+      navigation.navigate('HomePage');
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@token');
+      if (value !== null) {
+        // value previously stored
+        console.log('Token from async', value);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
 
   function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -26,6 +55,19 @@ export default function LogIn({navigation}) {
       setEmailErr('');
     }
     return re.test(String(email).toLowerCase());
+  }
+
+  function login(email, pwd) {
+    users.forEach(user => {
+      if (email === user.email) {
+        if (pwd === user.password) {
+          console.log('Login Successful');
+          storeData('qwerty');
+        } else {
+          console.log('PWD Wrong.', pwd, user.password);
+        }
+      }
+    });
   }
 
   return (
@@ -63,10 +105,15 @@ export default function LogIn({navigation}) {
           placeholder="Your Password"
           placeholderTextColor="#666666"
           style={styles.text_input}
+          onChangeText={value => {
+            setPwd(value);
+            console.log(value);
+          }}
+          // onSubmitEditing={() => validateEmail()}
         />
 
         <View style={styles.button}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => login(email, pwd)}>
             <Text style={styles.textSign}>Login</Text>
           </TouchableOpacity>
         </View>
