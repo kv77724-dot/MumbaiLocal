@@ -5,7 +5,8 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    Alert
 } from 'react-native';
 import { Icon, CheckBox } from 'react-native-elements';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -18,21 +19,45 @@ export default function BookTicket() {
 
     const [goToList, setGoToList] = useState([])
     const [flag, setFlag] = useState(true)
-    const [reset, setReset] = useState(null)
+    const [flag1, setFlag1] = useState(false)
+    const [show, setShow] = useState(false)
+    const [deptFrom, setdeptFrom] = useState() 
+    const [goTo, setgoTo] = useState() 
 
     let createGoToList = (value) =>{
+        setdeptFrom(value.label);
         if(listofwestn.some(station => station.label === value.label)){
             setGoToList(listofwestn); 
             setFlag(false);
-            setReset(null);
+            // setReset(null);
             //console.log("if wala"+reset)
         }else{
             setGoToList(listofcrstn);
             setFlag(false);
-            setReset(null);
+            //setReset(null);
             //console.log("else wala"+reset)
         }
     };
+
+    let checkSimilarStn = (value) => {
+        setgoTo(value)
+    }
+
+    let onPressNext = ()=>{
+        if(deptFrom === goTo){
+            Alert.alert(
+                "Alert!",
+                "Source and Destination can not be same",
+                [
+                  { text: "OK"}
+                ]
+              );
+        }else{
+            setShow(true);
+            setFlag(true);
+            setFlag1(true);
+        }
+    }
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -49,6 +74,7 @@ export default function BookTicket() {
                                 borderWidth: 1,
                                 borderColor: '#314e52',
                             }}
+                            disabled = {flag1}
                             placeholder="Depart from"
                             placeholderStyle={{ fontSize: 18 }}
                             searchable
@@ -66,144 +92,143 @@ export default function BookTicket() {
                             }}
                             placeholder="Going to"
                             disabled = {flag}
-                            defaultValue={reset}
+                            //defaultValue={reset}
                             placeholderStyle={{ fontSize: 18 }}
                             searchable
+                            onChangeItem={item => checkSimilarStn(item.value)}
                         />
                     </View>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignSelf: 'stretch',
-                            padding: 5,
-                            marginTop: 20,
-                        }}>
-                        <View style={{ flex: 1, paddingRight: 5 }}>
-                            <Text style={styles.field_name}>Adult</Text>
-                            <DropDownPicker
-                                items={[
-                                    { label: 'One (1)', value: 'one' },
-                                    { label: 'Two (2)', value: 'two' },
-                                    { label: 'Three (3)', value: 'three' },
-                                    { label: 'Four (4)', value: 'four' },
-                                ]}
-                                containerStyle={{ height: 30 }}
-                                defaultValue="one"
-                            />
-                        </View>
-
-                        <View style={{ flex: 1, paddingLeft: 5 }}>
-                            <Text style={styles.field_name}>Child</Text>
-                            <DropDownPicker
-                                items={[
-                                    { label: 'Zero (0)', value: 'zero' },
-                                    { label: 'One (1)', value: 'one' },
-                                    { label: 'Two (2)', value: 'two' },
-                                    { label: 'Three (3)', value: 'three' },
-                                    { label: 'Four (4)', value: 'four' },
-                                ]}
-                                containerStyle={{ height: 30 }}
-                                defaultValue="zero"
-                            />
-                        </View>
-                    </View>
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignSelf: 'stretch',
-                            padding: 5,
-                            marginTop: 10,
-                        }}>
-                        <View style={{ flex: 1, paddingRight: 5 }}>
-                            <Text style={styles.field_name}>Ticket Type</Text>
-                            <DropDownPicker
-                                items={[
-                                    { label: 'Journey', value: 'journey' },
-                                    { label: 'Return', value: 'return' },
-                                ]}
-                                containerStyle={{ height: 30 }}
-                                defaultValue="journey"
-                            />
-                        </View>
-
-                        <View style={{ flex: 1, paddingLeft: 5 }}>
-                            <Text style={styles.field_name}>Train Type</Text>
-                            <DropDownPicker
-                                items={[
-                                    { label: 'Ordinary', value: 'ordinary' },
-                                    { label: 'AC Emu', value: 'ac' },
-                                ]}
-                                containerStyle={{ height: 30 }}
-                                defaultValue="ordinary"
-                            />
-                        </View>
-                    </View>
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignSelf: 'stretch',
-                            padding: 5,
-                            marginTop: 10,
-                        }}>
-                        <View style={{ flex: 1, paddingRight: 5 }}>
-                            <Text style={styles.field_name}>Class</Text>
-                            <DropDownPicker
-                                items={[
-                                    { label: 'First', value: 'first' },
-                                    { label: 'Second', value: 'second' },
-                                ]}
-                                containerStyle={{ height: 30 }}
-                                defaultValue="second"
-                            />
-                        </View>
-
-                        <View style={{ flex: 1, paddingLeft: 5 }}>
-                            <Text style={styles.field_name}>Payment Type</Text>
-                            <DropDownPicker
-                                items={[
-                                    { label: 'Google Pay', value: 'gpay' },
-                                    { label: 'Other UPI/ Net Banking/ Debit Card', value: 'other' },
-                                ]}
-                                containerStyle={{ height: 30 }}
-                                defaultValue="gpay"
-                            />
-                        </View>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', padding: 5, marginTop: 10 }}>
-                        <CheckBox
-                            title="Book & Travel (Paperless)"
-                            checkedIcon="dot-circle-o"
-                            uncheckedIcon="circle-o"
-                            containerStyle={{ backgroundColor: '#f7f6e7', flex: 1 }}
-                        // checked={this.state.checked}
-                        />
-                    </View>
-                    <View style={{ flexDirection: 'row', padding: 5 }}>
-                        <CheckBox
-                            title="Book & Print (Paper)"
-                            checkedIcon="dot-circle-o"
-                            uncheckedIcon="circle-o"
-                            containerStyle={{ backgroundColor: '#f7f6e7', flex: 1 }}
-                        // checked={this.state.checked}
-                        />
-                    </View>
-                    <View style={{ flexDirection: 'row', padding: 5 }}>
-                        <CheckBox
-                            title="Book with ID (Paperless)"
-                            checkedIcon="dot-circle-o"
-                            uncheckedIcon="circle-o"
-                            containerStyle={{ backgroundColor: '#f7f6e7', flex: 1 }}
-                        // checked={this.state.checked}
-                        />
-                    </View>
-                    <View style={styles.button}>
-                        <TouchableOpacity>
-                            <Text style={styles.textSign}>GET FARE</Text>
+                    
+                    {show === false && <View style={[styles.button,{marginBottom:80,marginTop:50}]}>
+                        <TouchableOpacity onPress={onPressNext}>
+                            <Text style={styles.textSign}>NEXT</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View>}
+                    {show && <View style={{flex:1,alignItems:"center",alignSelf: 'stretch'}}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignSelf: 'stretch',
+                                padding: 5,
+                                marginTop: 20,
+                            }}>
+                            <View style={{ flex: 1, paddingRight: 5 }}>
+                                <Text style={styles.field_name}>Adult</Text>
+                                <DropDownPicker
+                                    items={[
+                                        { label: 'One (1)', value: 'one' },
+                                        { label: 'Two (2)', value: 'two' },
+                                        { label: 'Three (3)', value: 'three' },
+                                        { label: 'Four (4)', value: 'four' },
+                                    ]}
+                                    containerStyle={{ height: 30 }}
+                                    defaultValue="one"
+                                />
+                            </View>
+
+                            <View style={{ flex: 1, paddingLeft: 5 }}>
+                                <Text style={styles.field_name}>Child</Text>
+                                <DropDownPicker
+                                    items={[
+                                        { label: 'Zero (0)', value: 'zero' },
+                                        { label: 'One (1)', value: 'one' },
+                                        { label: 'Two (2)', value: 'two' },
+                                        { label: 'Three (3)', value: 'three' },
+                                        { label: 'Four (4)', value: 'four' },
+                                    ]}
+                                    containerStyle={{ height: 30 }}
+                                    defaultValue="zero"
+                                />
+                            </View>
+                        </View>
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignSelf: 'stretch',
+                                padding: 5,
+                                marginTop: 10,
+                            }}>
+                            <View style={{ flex: 1, paddingRight: 5 }}>
+                                <Text style={styles.field_name}>Ticket Type</Text>
+                                <DropDownPicker
+                                    items={[
+                                        { label: 'Journey', value: 'journey' },
+                                        { label: 'Return', value: 'return' },
+                                    ]}
+                                    containerStyle={{ height: 30 }}
+                                    defaultValue="journey"
+                                />
+                            </View>
+
+                            <View style={{ flex: 1, paddingRight: 5 }}>
+                                <Text style={styles.field_name}>Class</Text>
+                                <DropDownPicker
+                                    items={[
+                                        { label: 'First', value: 'first' },
+                                        { label: 'Second', value: 'second' },
+                                    ]}
+                                    containerStyle={{ height: 30 }}
+                                    defaultValue="second"
+                                />
+                            </View>
+                        </View>
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignSelf: 'stretch',
+                                padding: 5,
+                                marginTop: 10,
+                            }}>
+
+                            <View style={{ flex: 1, paddingLeft: 5 }}>
+                                <Text style={styles.field_name}>Payment Type</Text>
+                                <DropDownPicker
+                                    items={[
+                                        { label: 'Google Pay', value: 'gpay' },
+                                        { label: 'Other UPI/ Net Banking/ Debit Card', value: 'other' },
+                                    ]}
+                                    containerStyle={{ height: 30 }}
+                                    defaultValue="gpay"
+                                />
+                            </View>
+                            <View style={{ flex: 1, paddingLeft: 5 }}></View>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', padding: 5, marginTop: 10 }}>
+                            <CheckBox
+                                title="Book & Travel (Paperless)"
+                                checkedIcon="dot-circle-o"
+                                uncheckedIcon="circle-o"
+                                containerStyle={{ backgroundColor: '#f7f6e7', flex: 1 }}
+                            // checked={this.state.checked}
+                            />
+                        </View>
+                        <View style={{ flexDirection: 'row', padding: 5 }}>
+                            <CheckBox
+                                title="Book & Print (Paper)"
+                                checkedIcon="dot-circle-o"
+                                uncheckedIcon="circle-o"
+                                containerStyle={{ backgroundColor: '#f7f6e7', flex: 1 }}
+                            // checked={this.state.checked}
+                            />
+                        </View>
+                        <View style={{ flexDirection: 'row', padding: 5 }}>
+                            <CheckBox
+                                title="Book with ID (Paperless)"
+                                checkedIcon="dot-circle-o"
+                                uncheckedIcon="circle-o"
+                                containerStyle={{ backgroundColor: '#f7f6e7', flex: 1 }}
+                            // checked={this.state.checked}
+                            />
+                        </View>
+                        <View style={styles.button}>
+                            <TouchableOpacity>
+                                <Text style={styles.textSign}>GET FARE</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>}
                 </View>
             </View>
         </ScrollView>
@@ -249,6 +274,7 @@ const styles = StyleSheet.create({
     field_name: {
         color: '#314e52',
         fontSize: 16,
+        marginBottom:5
     },
     button: {
         backgroundColor: '#314e52',
