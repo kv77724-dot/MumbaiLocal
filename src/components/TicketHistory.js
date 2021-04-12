@@ -5,186 +5,52 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  FlatList
 } from 'react-native';
 import {Icon, CheckBox} from 'react-native-elements';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function BookTicket() {
+  const data = [
+    {id:'101211',timestamp: '01/12/2020 6:30', from: 'Borivali', to: 'Nalasopara', type: 'Return', adult: '1', child:'0',class:'Second', cardid: '3257 1280 3454', fare: '30'},
+    {id:'101212',timestamp: '01/13/2020 12:30', from: 'Andheri', to: 'churchgate', type: 'Return', adult: '2', child:'0', class:'Second', cardid: '1257 5647 3458', fare: '20'},
+    {id:'101213',timestamp: '01/13/2020 1:52', from: 'Sion', to: 'CSMT', type: 'Return', adult: '3', child:'1', class:'Second', cardid: '8257 1280 3452', fare: '10'},
+    {id:'101214',timestamp: '01/14/2020 4:39', from: 'Borivali', to: 'Malad', type: 'Return', adult: '1', child:'0', class:'Second', cardid: '3257 1280 3454', fare: '30'},
+    {id:'101215',timestamp: '01/12/2020 6:30', from: 'Borivali', to: 'Nalasopara', type: 'Return', adult: '1', child:'0', class:'Second', cardid: '3257 1280 3454', fare: '30'}
+  ]
+  const renderItem = ({ item }) => (
+    <View style={styles.card}>
+      <View style={{flexDirection: 'row',padding:10,justifyContent:'space-between',alignSelf:'stretch'}}>
+        <Text>Ticket id: {item.id}</Text>
+        <Text>Date: {item.timestamp}</Text>
+      </View>
+
+      <View style={{flexDirection: 'row',padding:5}}>
+        <Text style={{fontSize:26,fontWeight: 'bold'}}>{item.from}</Text>
+        <Icon name="swap-horiz" style={{ paddingHorizontal: 10 }} size={40} />
+        <Text style={{fontSize:26,fontWeight: 'bold'}}>{item.to}</Text>
+      </View>
+
+      <View style={{flexDirection: 'row',padding:10,justifyContent:'space-evenly',alignSelf:'stretch'}}>
+          <Text>{item.type}</Text>
+          <Text>Adult: {item.adult}</Text>
+          <Text>Child: {item.child}</Text>
+          <Text>Class: {item.class}</Text>
+      </View>
+
+      <View style={{flexDirection: 'row',padding:10,justifyContent:'space-between',alignSelf:'stretch'}}>
+        <Text style={{paddingVertical:8}}>Adhar/PAN No: {item.cardid}</Text>
+        <Text style={{fontSize:22,fontWeight:'bold'}}>Fare: Rs. {item.fare}/-</Text>
+      </View>
+    </View>
+  );
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.card_heading}>
-          <Text style={styles.title}>Book Your Ticket</Text>
-        </View>
-        <View style={{flexDirection: 'row', alignSelf: 'stretch', padding: 5}}>
-          <DropDownPicker
-            items={[
-              {label: 'Borivali', value: 'bv'},
-              {label: 'Kandivali', value: 'kn'},
-              {label: 'Malad', value: 'ml'},
-              {label: 'Goregaon', value: 'grg'},
-              {label: 'Ram mandir', value: 'rm'},
-            ]}
-            containerStyle={{height: 45, flex: 1}}
-            style={{
-              backgroundColor: '#f7f6e7',
-              borderWidth: 1,
-              borderColor: '#314e52',
-            }}
-            placeholder="Depart from"
-            placeholderStyle={{fontSize: 18}}
-            searchable
-          />
-          <Icon name="swap-horiz" style={{paddingHorizontal: 10}} size={40} />
-          <DropDownPicker
-            items={[
-              {label: 'Borivali', value: 'bv'},
-              {label: 'Kandivali', value: 'kn'},
-              {label: 'Malad', value: 'ml'},
-              {label: 'Goregaon', value: 'grg'},
-              {label: 'Ram mandir', value: 'rm'},
-            ]}
-            containerStyle={{height: 45, flex: 1}}
-            style={{backgroundColor: '#f7f6e7'}}
-            placeholder="Going to"
-            placeholderStyle={{fontSize: 18}}
-            searchable
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'stretch',
-            padding: 5,
-            marginTop: 20,
-          }}>
-          <View style={{flex: 1, paddingRight: 5}}>
-            <Text style={styles.field_name}>Adult</Text>
-            <DropDownPicker
-              items={[
-                {label: 'One (1)', value: 'one'},
-                {label: 'Two (2)', value: 'two'},
-                {label: 'Three (3)', value: 'three'},
-                {label: 'Four (4)', value: 'four'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="one"
-            />
-          </View>
-
-          <View style={{flex: 1, paddingLeft: 5}}>
-            <Text style={styles.field_name}>Child</Text>
-            <DropDownPicker
-              items={[
-                {label: 'Zero (0)', value: 'zero'},
-                {label: 'One (1)', value: 'one'},
-                {label: 'Two (2)', value: 'two'},
-                {label: 'Three (3)', value: 'three'},
-                {label: 'Four (4)', value: 'four'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="zero"
-            />
-          </View>
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'stretch',
-            padding: 5,
-            marginTop: 10,
-          }}>
-          <View style={{flex: 1, paddingRight: 5}}>
-            <Text style={styles.field_name}>Ticket Type</Text>
-            <DropDownPicker
-              items={[
-                {label: 'Journey', value: 'journey'},
-                {label: 'Return', value: 'return'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="journey"
-            />
-          </View>
-
-          <View style={{flex: 1, paddingLeft: 5}}>
-            <Text style={styles.field_name}>Train Type</Text>
-            <DropDownPicker
-              items={[
-                {label: 'Ordinary', value: 'ordinary'},
-                {label: 'AC Emu', value: 'ac'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="ordinary"
-            />
-          </View>
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'stretch',
-            padding: 5,
-            marginTop: 10,
-          }}>
-          <View style={{flex: 1, paddingRight: 5}}>
-            <Text style={styles.field_name}>Class</Text>
-            <DropDownPicker
-              items={[
-                {label: 'First', value: 'first'},
-                {label: 'Second', value: 'second'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="second"
-            />
-          </View>
-
-          <View style={{flex: 1, paddingLeft: 5}}>
-            <Text style={styles.field_name}>Payment Type</Text>
-            <DropDownPicker
-              items={[
-                {label: 'Google Pay', value: 'gpay'},
-                {label: 'Other UPI/ Net Banking/ Debit Card', value: 'other'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="gpay"
-            />
-          </View>
-        </View>
-
-        <View style={{flexDirection: 'row', padding: 5, marginTop: 10}}>
-          <CheckBox
-            title="Book & Travel (Paperless)"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            containerStyle={{backgroundColor: '#f7f6e7', flex: 1}}
-            // checked={this.state.checked}
-          />
-        </View>
-        <View style={{flexDirection: 'row', padding: 5}}>
-          <CheckBox
-            title="Book & Print (Paper)"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            containerStyle={{backgroundColor: '#f7f6e7', flex: 1}}
-            // checked={this.state.checked}
-          />
-        </View>
-        <View style={{flexDirection: 'row', padding: 5}}>
-          <CheckBox
-            title="Book with ID (Paperless)"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            containerStyle={{backgroundColor: '#f7f6e7', flex: 1}}
-            // checked={this.state.checked}
-          />
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity>
-            <Text style={styles.textSign}>GET FARE</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <FlatList
+        data={data}
+        keyExtractor={item => item.id}
+        renderItem={renderItem}
+      />
     </View>
   );
 }
