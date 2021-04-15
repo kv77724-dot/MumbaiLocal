@@ -80,25 +80,42 @@ export default function BookTicket({navigation}) {
         let distance = Math.abs(stnDistance[deptFrom] - stnDistance[goTo])
         let fare = 0;
 
-        if(distance<=8)
-            fare = 5
-        else if(distance>8 && distance<=28)
-            fare = 10
-        else if(distance>28 && distance<=52)
-            fare = 15;
-        else if(distance>52 && distance<=74)
-            fare = 20;
-        else if(distance>74 && distance<=80)
-            fare = 25;
-        else
-            fare = 30;
-
+        if(classType === 'second'){
+            if(distance<=8)
+                fare = 5;
+            else if(distance>8 && distance<=28)
+                fare = 10;
+            else if(distance>28 && distance<=52)
+                fare = 15;
+            else if(distance>52 && distance<=74)
+                fare = 20;
+            else if(distance>74 && distance<=80)
+                fare = 25;
+            else
+                fare = 30;
+        }else{
+            if(distance<=8)
+                fare = 50;
+            else if(distance>8 && distance<=14)
+                fare = 70;
+            else if(distance>14 && distance<=23)
+                fare = 105;
+            else if(distance>23 && distance<=42)
+                fare = 150;
+            else if(distance>42 && distance<=60)
+                fare = 170;
+            else if(distance>60 && distance<=88)
+                fare = 200;
+            else
+                fare=240;
+        }
+        
         if(ticketType === 'return'){
             fare = fare*2;
         }
         
         let totalFare = fare*parseInt(noOfAdult) + Math.round(fare/2)*parseInt(noOfChild);
-        
+
         let data = {source: deptFrom, destination: goTo, adult: noOfAdult, child: noOfChild,
             classtype: classType, tickettype: ticketType, ticketform: ticketForm, fare: totalFare}
         navigation.navigate('Payment',data)
