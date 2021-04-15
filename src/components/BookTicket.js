@@ -10,9 +10,10 @@ import {
 } from 'react-native';
 import { Icon, CheckBox } from 'react-native-elements';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {listOfAllStn, listOfWRStn, listOfCRStn} from './constant';
+import {listOfAllStn, listOfWRStn, listOfCRStn, stnDistance} from './constant';
 
-export default function BookTicket() {
+
+export default function BookTicket({navigation}) {
     const listofallstn = listOfAllStn;
     const listofwestn = listOfWRStn;
     const listofcrstn = listOfCRStn;
@@ -21,21 +22,28 @@ export default function BookTicket() {
     const [flag, setFlag] = useState(true)
     const [flag1, setFlag1] = useState(false)
     const [show, setShow] = useState(false)
-    const [deptFrom, setdeptFrom] = useState() 
-    const [goTo, setgoTo] = useState() 
+    const [paperlessChecked, setpaperlessChecked] = useState(true)
+    const [paperChecked, setpaperChecked] = useState(false)
+    const [withIdChecked, setwithIdChecked] = useState(false)
+
+    const [deptFrom, setdeptFrom] = useState(null) 
+    const [goTo, setgoTo] = useState(null)
+    const [noOfAdult, setnoOfAdult] = useState('1')
+    const [noOfChild, setnoOfChild] = useState('0')
+    const [ticketType, setticketType] = useState('journey')
+    const [classType, setclassType] = useState('second')
+    const [paymentType, setpaymentType] = useState('gpay')
+    const [ticketForm, setticketForm] = useState('Book & Travel (Paperless)')
+    
 
     let createGoToList = (value) =>{
         setdeptFrom(value.label);
         if(listofwestn.some(station => station.label === value.label)){
             setGoToList(listofwestn); 
             setFlag(false);
-            // setReset(null);
-            //console.log("if wala"+reset)
         }else{
             setGoToList(listofcrstn);
             setFlag(false);
-            //setReset(null);
-            //console.log("else wala"+reset)
         }
     };
 
@@ -52,12 +60,51 @@ export default function BookTicket() {
                   { text: "OK"}
                 ]
               );
+        }else if(deptFrom === null || goTo === null){
+            Alert.alert(
+                "Alert!",
+                "Please select both Source and Destination",
+                [
+                  { text: "OK"}
+                ]
+              );
         }else{
             setShow(true);
             setFlag(true);
             setFlag1(true);
         }
     }
+
+    let onPressGetFare = () => {
+        
+        let distance = Math.abs(stnDistance[deptFrom] - stnDistance[goTo])
+        let fare = 0;
+
+        if(distance<=8)
+            fare = 5
+        else if(distance>8 && distance<=28)
+            fare = 10
+        else if(distance>28 && distance<=52)
+            fare = 15;
+        else if(distance>52 && distance<=74)
+            fare = 20;
+        else if(distance>74 && distance<=80)
+            fare = 25;
+        else
+            fare = 30;
+
+        if(ticketType === 'return'){
+            fare = fare*2;
+        }
+        
+        let totalFare = fare*parseInt(noOfAdult) + Math.round(fare/2)*parseInt(noOfChild);
+        
+        let data = {source: deptFrom, destination: goTo, adult: noOfAdult, child: noOfChild,
+            classtype: classType, tickettype: ticketType, ticketform: ticketForm, fare: totalFare}
+        navigation.navigate('Payment',data)
+    }
+    
+
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -116,13 +163,14 @@ export default function BookTicket() {
                                 <Text style={styles.field_name}>Adult</Text>
                                 <DropDownPicker
                                     items={[
-                                        { label: 'One (1)', value: 'one' },
-                                        { label: 'Two (2)', value: 'two' },
-                                        { label: 'Three (3)', value: 'three' },
-                                        { label: 'Four (4)', value: 'four' },
+                                        { label: 'One (1)', value: '1' },
+                                        { label: 'Two (2)', value: '2' },
+                                        { label: 'Three (3)', value: '3' },
+                                        { label: 'Four (4)', value: '4' },
                                     ]}
                                     containerStyle={{ height: 30 }}
-                                    defaultValue="one"
+                                    defaultValue='1'
+                                    onChangeItem={(item)=>setnoOfAdult(item.value)}
                                 />
                             </View>
 
@@ -130,14 +178,15 @@ export default function BookTicket() {
                                 <Text style={styles.field_name}>Child</Text>
                                 <DropDownPicker
                                     items={[
-                                        { label: 'Zero (0)', value: 'zero' },
-                                        { label: 'One (1)', value: 'one' },
-                                        { label: 'Two (2)', value: 'two' },
-                                        { label: 'Three (3)', value: 'three' },
-                                        { label: 'Four (4)', value: 'four' },
+                                        { label: 'Zero (0)', value: '0' },
+                                        { label: 'One (1)', value: '1' },
+                                        { label: 'Two (2)', value: '2' },
+                                        { label: 'Three (3)', value: '3' },
+                                        { label: 'Four (4)', value: '4' },
                                     ]}
                                     containerStyle={{ height: 30 }}
-                                    defaultValue="zero"
+                                    defaultValue="0"
+                                    onChangeItem={(item)=>setnoOfChild(item.value)}
                                 />
                             </View>
                         </View>
@@ -158,6 +207,7 @@ export default function BookTicket() {
                                     ]}
                                     containerStyle={{ height: 30 }}
                                     defaultValue="journey"
+                                    onChangeItem={(item)=>setticketType(item.value)}
                                 />
                             </View>
 
@@ -170,6 +220,7 @@ export default function BookTicket() {
                                     ]}
                                     containerStyle={{ height: 30 }}
                                     defaultValue="second"
+                                    onChangeItem={(item)=>setclassType(item.value)}
                                 />
                             </View>
                         </View>
@@ -191,6 +242,7 @@ export default function BookTicket() {
                                     ]}
                                     containerStyle={{ height: 30 }}
                                     defaultValue="gpay"
+                                    onChangeItem={(item)=>setpaymentType(item.value)}
                                 />
                             </View>
                             <View style={{ flex: 1, paddingLeft: 5 }}></View>
@@ -202,7 +254,13 @@ export default function BookTicket() {
                                 checkedIcon="dot-circle-o"
                                 uncheckedIcon="circle-o"
                                 containerStyle={{ backgroundColor: '#f7f6e7', flex: 1 }}
-                            // checked={this.state.checked}
+                                checked={paperlessChecked}
+                                onPress={()=>{
+                                    setpaperlessChecked(true)
+                                    setpaperChecked(false)
+                                    setwithIdChecked(false)
+                                    setticketForm('Book & Travel (Paperless)')
+                                }}
                             />
                         </View>
                         <View style={{ flexDirection: 'row', padding: 5 }}>
@@ -211,7 +269,13 @@ export default function BookTicket() {
                                 checkedIcon="dot-circle-o"
                                 uncheckedIcon="circle-o"
                                 containerStyle={{ backgroundColor: '#f7f6e7', flex: 1 }}
-                            // checked={this.state.checked}
+                                checked={paperChecked}
+                                onPress={()=>{
+                                    setpaperlessChecked(false)
+                                    setpaperChecked(true)
+                                    setwithIdChecked(false)
+                                    setticketForm('Book & Print (Paper)')
+                                }}
                             />
                         </View>
                         <View style={{ flexDirection: 'row', padding: 5 }}>
@@ -220,11 +284,17 @@ export default function BookTicket() {
                                 checkedIcon="dot-circle-o"
                                 uncheckedIcon="circle-o"
                                 containerStyle={{ backgroundColor: '#f7f6e7', flex: 1 }}
-                            // checked={this.state.checked}
+                                checked={withIdChecked}
+                                onPress={()=>{
+                                    setpaperlessChecked(false)
+                                    setpaperChecked(false)
+                                    setwithIdChecked(true)
+                                    setticketForm('Book with ID (Paperless)')
+                                }}
                             />
                         </View>
                         <View style={styles.button}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={onPressGetFare}>
                                 <Text style={styles.textSign}>GET FARE</Text>
                             </TouchableOpacity>
                         </View>

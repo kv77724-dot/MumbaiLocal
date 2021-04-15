@@ -7,6 +7,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -71,6 +72,7 @@ export default function LogIn({navigation}) {
   }
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Welcome back!</Text>
@@ -139,6 +141,7 @@ export default function LogIn({navigation}) {
           Platform.OS === 'ios' ? 40 : 0
         }></KeyboardAvoidingView> */}
     </View>
+    </ScrollView>
   );
 }
 

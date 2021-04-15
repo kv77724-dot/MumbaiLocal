@@ -71,43 +71,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: 'grey',
-  },
-  title: {
-    color: 'white',
-    fontSize: 26,
-    fontWeight: 'bold',
-  },
-  card_heading: {
-    padding: 5,
-    borderRadius: 5,
-    backgroundColor: '#314e52',
-    alignSelf: 'stretch',
-  },
-  text_input: {
-    marginTop: Platform.OS === 'ios' ? 0 : -12,
-    color: '#05375a',
-    fontSize: 18,
-    borderBottomWidth: 1,
-    borderBottomColor: '#314e52',
-    flex: 1,
-  },
-  field_name: {
-    color: '#314e52',
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: '#314e52',
-    marginVertical: 10,
-    width: 160,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 50,
-    flexDirection: 'row',
-  },
-  textSign: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
+  }
 });

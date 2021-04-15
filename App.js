@@ -10,6 +10,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Icon, CheckBox} from 'react-native-elements';
+import Payment from './src/components/Payment';
 
 const AuthStack = createStackNavigator();
 const TicketStack = createStackNavigator();
@@ -61,13 +62,19 @@ export default function MainApp() {
         <AuthStack.Screen
           name="LogIn"
           component={LogIn}
-          options={{title: 'Log In', headerLeft: null}}
+          options={{title: 'Log In', headerLeft: null,headerStyle: {
+              backgroundColor: '#314e52'
+            },
+            headerTintColor: 'white',}}
           headerTruncatedBackTitle
         />
         <AuthStack.Screen
           name="SignUp"
           component={SignUp}
-          options={{title: 'Sign Up', headerLeft: null}}
+          options={{title: 'Sign Up', headerLeft: null,headerStyle: {
+              backgroundColor: '#314e52'
+            },
+            headerTintColor: 'white',}}
           headerTruncatedBackTitle
         />
         <AuthStack.Screen
@@ -94,11 +101,12 @@ export default function MainApp() {
           //   ),
           // }}
           options={({route, navigation}) => ({
-            title: 'Home Page',
+            title: 'Home',
             headerLeft: null,
             headerStyle: {
-              backgroundColor: '#314e52',
+              backgroundColor: '#314e52'
             },
+            headerTintColor: 'white',
             headerRight: () => (
               <View style={{marginRight: 10}}>
                 <Button
@@ -107,7 +115,7 @@ export default function MainApp() {
                     navigation.navigate('LogIn');
                   }}
                   title="LogOut"
-                  color="#289672"
+                  color="#314e52"
                   // color=""
                 />
               </View>
@@ -117,19 +125,37 @@ export default function MainApp() {
         <AuthStack.Screen
           name="BookTicket"
           component={BookTicket}
-          options={{title: 'Book Ticket'}}
+          options={{title: 'Book Ticket',headerStyle: {
+              backgroundColor: '#314e52'
+            },
+            headerTintColor: 'white',}}
           headerTruncatedBackTitle
         />
         <AuthStack.Screen
           name="TicketHistory"
           component={TicketHistory}
-          options={{title: 'Booked Ticket History'}}
+          options={{title: 'Booked Ticket History',headerStyle: {
+              backgroundColor: '#314e52'
+            },
+            headerTintColor: 'white',}}
           headerTruncatedBackTitle
         />
         <AuthStack.Screen
           name="Profile"
           component={Profile}
-          options={{title: 'Your Profile'}}
+          options={{title: 'Your Profile',headerStyle: {
+              backgroundColor: '#314e52'
+            },
+            headerTintColor: 'white',}}
+          headerTruncatedBackTitle
+        />
+        <AuthStack.Screen
+          name="Payment"
+          component={Payment}
+          options={{title: 'Payment',headerStyle: {
+              backgroundColor: '#314e52'
+            },
+            headerTintColor: 'white',}}
           headerTruncatedBackTitle
         />
       </AuthStack.Navigator>

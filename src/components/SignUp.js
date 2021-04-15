@@ -5,11 +5,13 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function SignUp({navigation}) {
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Create Account</Text>
@@ -105,6 +107,7 @@ export default function SignUp({navigation}) {
         </View>
       </View>
     </View>
+    </ScrollView>
   );
 }
 

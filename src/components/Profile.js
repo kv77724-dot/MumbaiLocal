@@ -3,186 +3,74 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  TouchableOpacity,
+  TextInput
 } from 'react-native';
-import {Icon, CheckBox} from 'react-native-elements';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Avatar } from "react-native-elements";
 
-export default function BookTicket() {
+
+export default function SignUp({navigation}) {
+  const user = {
+    firstname: 'Sumit' ,lastname:'Pai', email:'sumit23181998@gmail.com', cardtype: 'Adhar Card', cardnumber: '1452 6589 7139'
+  }
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.card_heading}>
-          <Text style={styles.title}>Book Your Ticket</Text>
-        </View>
-        <View style={{flexDirection: 'row', alignSelf: 'stretch', padding: 5}}>
-          <DropDownPicker
-            items={[
-              {label: 'Borivali', value: 'bv'},
-              {label: 'Kandivali', value: 'kn'},
-              {label: 'Malad', value: 'ml'},
-              {label: 'Goregaon', value: 'grg'},
-              {label: 'Ram mandir', value: 'rm'},
-            ]}
-            containerStyle={{height: 45, flex: 1}}
-            style={{
-              backgroundColor: '#f7f6e7',
-              borderWidth: 1,
-              borderColor: '#314e52',
-            }}
-            placeholder="Depart from"
-            placeholderStyle={{fontSize: 18}}
-            searchable
-          />
-          <Icon name="swap-horiz" style={{paddingHorizontal: 10}} size={40} />
-          <DropDownPicker
-            items={[
-              {label: 'Borivali', value: 'bv'},
-              {label: 'Kandivali', value: 'kn'},
-              {label: 'Malad', value: 'ml'},
-              {label: 'Goregaon', value: 'grg'},
-              {label: 'Ram mandir', value: 'rm'},
-            ]}
-            containerStyle={{height: 45, flex: 1}}
-            style={{backgroundColor: '#f7f6e7'}}
-            placeholder="Going to"
-            placeholderStyle={{fontSize: 18}}
-            searchable
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'stretch',
-            padding: 5,
-            marginTop: 20,
-          }}>
-          <View style={{flex: 1, paddingRight: 5}}>
-            <Text style={styles.field_name}>Adult</Text>
-            <DropDownPicker
-              items={[
-                {label: 'One (1)', value: 'one'},
-                {label: 'Two (2)', value: 'two'},
-                {label: 'Three (3)', value: 'three'},
-                {label: 'Four (4)', value: 'four'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="one"
+      <View style={styles.header}>
+        <Avatar
+          rounded
+          size='large'
+          icon={{name: 'user', type: 'font-awesome'}}
+          containerStyle={{backgroundColor:'black',marginTop:20}}
+        />
+      </View>
+
+      <View style={styles.footer}>
+        <View style={styles.row}>
+          <View style={[styles.row_item, {marginRight: 10}]}>
+            <Text style={styles.field_name}>First Name</Text>
+            <TextInput
+              defaultValue={user.firstname}
+              style={styles.text_input}
+              editable={false}
             />
           </View>
-
-          <View style={{flex: 1, paddingLeft: 5}}>
-            <Text style={styles.field_name}>Child</Text>
-            <DropDownPicker
-              items={[
-                {label: 'Zero (0)', value: 'zero'},
-                {label: 'One (1)', value: 'one'},
-                {label: 'Two (2)', value: 'two'},
-                {label: 'Three (3)', value: 'three'},
-                {label: 'Four (4)', value: 'four'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="zero"
+          <View style={[styles.row_item, {marginLeft: 10}]}>
+            <Text style={styles.field_name}>Last Name</Text>
+            <TextInput
+              defaultValue={user.lastname}
+              style={styles.text_input}
+              editable={false}
             />
           </View>
         </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'stretch',
-            padding: 5,
-            marginTop: 10,
-          }}>
-          <View style={{flex: 1, paddingRight: 5}}>
-            <Text style={styles.field_name}>Ticket Type</Text>
-            <DropDownPicker
-              items={[
-                {label: 'Journey', value: 'journey'},
-                {label: 'Return', value: 'return'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="journey"
-            />
-          </View>
-
-          <View style={{flex: 1, paddingLeft: 5}}>
-            <Text style={styles.field_name}>Train Type</Text>
-            <DropDownPicker
-              items={[
-                {label: 'Ordinary', value: 'ordinary'},
-                {label: 'AC Emu', value: 'ac'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="ordinary"
+        <View style={styles.row}>
+          <View style={styles.row_item}>
+            <Text style={styles.field_name}>Email</Text>
+            <TextInput
+              defaultValue={user.email}
+              style={styles.text_input}
+              editable={false}
             />
           </View>
         </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'stretch',
-            padding: 5,
-            marginTop: 10,
-          }}>
-          <View style={{flex: 1, paddingRight: 5}}>
-            <Text style={styles.field_name}>Class</Text>
-            <DropDownPicker
-              items={[
-                {label: 'First', value: 'first'},
-                {label: 'Second', value: 'second'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="second"
-            />
-          </View>
-
-          <View style={{flex: 1, paddingLeft: 5}}>
-            <Text style={styles.field_name}>Payment Type</Text>
-            <DropDownPicker
-              items={[
-                {label: 'Google Pay', value: 'gpay'},
-                {label: 'Other UPI/ Net Banking/ Debit Card', value: 'other'},
-              ]}
-              containerStyle={{height: 30}}
-              defaultValue="gpay"
+        <View style={styles.row}>
+          <View style={styles.row_item}>
+            <Text style={styles.field_name}>Id Card Type</Text>
+            <TextInput
+              defaultValue={user.cardtype}
+              style={styles.text_input}
+              editable={false}
             />
           </View>
         </View>
-
-        <View style={{flexDirection: 'row', padding: 5, marginTop: 10}}>
-          <CheckBox
-            title="Book & Travel (Paperless)"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            containerStyle={{backgroundColor: '#f7f6e7', flex: 1}}
-            // checked={this.state.checked}
-          />
-        </View>
-        <View style={{flexDirection: 'row', padding: 5}}>
-          <CheckBox
-            title="Book & Print (Paper)"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            containerStyle={{backgroundColor: '#f7f6e7', flex: 1}}
-            // checked={this.state.checked}
-          />
-        </View>
-        <View style={{flexDirection: 'row', padding: 5}}>
-          <CheckBox
-            title="Book with ID (Paperless)"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            containerStyle={{backgroundColor: '#f7f6e7', flex: 1}}
-            // checked={this.state.checked}
-          />
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity>
-            <Text style={styles.textSign}>GET FARE</Text>
-          </TouchableOpacity>
+        <View style={styles.row}>
+          <View style={styles.row_item}>
+            <Text style={styles.field_name}>Id Card Number</Text>
+            <TextInput
+              defaultValue={user.cardnumber}
+              style={styles.text_input}
+              editable={false}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -191,49 +79,58 @@ export default function BookTicket() {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     flex: 1,
     backgroundColor: '#e7e6e1',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  card: {
-    margin: 5,
+  header: {
     flex: 1,
-    backgroundColor: '#f7f6e7',
     alignItems: 'center',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'grey',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+  },
+  footer: {
+    flex: 10,
+    backgroundColor: '#f7f6e7',
+    marginTop:20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
   },
   title: {
-    color: 'white',
-    fontSize: 26,
+    color: '#314e52',
+    fontSize: 30,
     fontWeight: 'bold',
   },
-  card_heading: {
-    padding: 5,
-    borderRadius: 5,
-    backgroundColor: '#314e52',
-    alignSelf: 'stretch',
+  field_name: {
+    color: '#314e52',
+    fontSize: 18,
+    fontWeight:'bold',
+    paddingBottom: 10,
+    paddingLeft:5
+    
   },
   text_input: {
     marginTop: Platform.OS === 'ios' ? 0 : -12,
     color: '#05375a',
-    fontSize: 18,
+    fontSize:16,
     borderBottomWidth: 1,
     borderBottomColor: '#314e52',
-    flex: 1,
   },
-  field_name: {
-    color: '#314e52',
-    fontSize: 16,
+  row: {
+    flexDirection: 'row',
+    flex: 1,
+    paddingBottom: 40,
+  },
+  row_item: {
+    flex: 1,
   },
   button: {
     backgroundColor: '#314e52',
-    marginVertical: 10,
-    width: 160,
-    height: 30,
+    marginTop: 20,
+    width: 130,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
@@ -243,5 +140,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 18,
+  },
+  new_user: {
+    flex: 1,
+    marginTop: 60,
+    alignItems: 'center',
   },
 });

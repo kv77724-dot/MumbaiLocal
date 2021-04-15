@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "315658422242",
+    "project_id": "mumbailocal-f4807",
+    "storage_bucket": "mumbailocal-f4807.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315658422242:android:7b2a0d5c9908b0395e5bbb",
+        "android_client_info": {
+          "package_name": "com.mumbailocal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315658422242-rnk0svjjil83fapu966kgnokcdc7hbep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqMQ5GwlWS-RuhqyI6HlGGM0xZUVg6JuA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315658422242-rnk0svjjil83fapu966kgnokcdc7hbep.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
