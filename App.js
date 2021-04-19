@@ -16,27 +16,7 @@ const AuthStack = createStackNavigator();
 const TicketStack = createStackNavigator();
 
 
-const getData = async () => {
- 
-  try {
-    const value = await AsyncStorage.getItem('@token');
-    if (value !== null) {
-      // value previously stored
-      setAuthToken(value);
-      console.log('Token from async', value);
-    }
-  } catch (e) {
-    // error reading value
-  }
-};
 
-const removeValue = async () => {
-  try {
-    await AsyncStorage.removeItem('@token');
-  } catch (e) {
-    // remove error
-  }
-};
 
 console.log('App launch');
 
@@ -49,6 +29,29 @@ var user = [
 
 export default function MainApp() {
   const [authToken,setAuthToken] = useState(null);
+
+  const getData = async () => {
+ 
+    try {
+      const value = await AsyncStorage.getItem('@token');
+      if (value !== null) {
+        // value previously stored
+        setAuthToken(value);
+        console.log('Token from async', value);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+  
+  const removeValue = async () => {
+    try {
+      await AsyncStorage.removeItem('@token');
+    } catch (e) {
+      // remove error
+    }
+  };
+
   useEffect(() => {
     getData();
     return () => {
@@ -60,7 +63,7 @@ export default function MainApp() {
       {authToken === null ? (
       
       <AuthStack.Navigator>
-        {/* <AuthStack.Screen
+         <AuthStack.Screen
           name="LogIn"
           component={LogIn}
           options={{title: 'Log In', headerLeft: null,headerStyle: {
@@ -96,8 +99,7 @@ export default function MainApp() {
                 <View style={{marginRight: 10}}>
                   <Button
                     onPress={() => {
-                      removeValue({navigation});
-                      navigation.navigate('LogIn');
+                      removeValue();
                     }}
                     title="LogOut"
                     color="#314e52"
