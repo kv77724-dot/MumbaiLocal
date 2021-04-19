@@ -60,7 +60,7 @@ export default function MainApp() {
       {authToken === null ? (
       
       <AuthStack.Navigator>
-        <AuthStack.Screen
+        {/* <AuthStack.Screen
           name="LogIn"
           component={LogIn}
           options={{title: 'Log In', headerLeft: null,headerStyle: {
