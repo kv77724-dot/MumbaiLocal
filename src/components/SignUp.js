@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,8 +8,25 @@ import {
   ScrollView
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {signup} from '../firebase/fire'
 
 export default function SignUp({navigation}) {
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [mobNumber, setMobNumber] = useState();
+  const [idCard, setIdCard] = useState();
+  const [idCardNum, setIdCardNum] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onSubmit = ()=> {
+    try{
+      signup(email,password,firstName,lastName,mobNumber,idCard,idCardNum)
+    }
+    catch(e){
+      console.log(e)
+    }
+  }
   return (
     <ScrollView>
     <View style={styles.container}>
@@ -25,6 +42,9 @@ export default function SignUp({navigation}) {
               placeholder="First Name"
               placeholderTextColor="#666666"
               style={styles.text_input}
+              onChangeText={value => {
+                setFirstName(value);
+              }}
             />
           </View>
           <View style={[styles.row_item, {marginLeft: 10}]}>
@@ -33,6 +53,9 @@ export default function SignUp({navigation}) {
               placeholder="Last Name"
               placeholderTextColor="#666666"
               style={styles.text_input}
+              onChangeText={value => {
+                setLastName(value);
+              }}
             />
           </View>
         </View>
@@ -43,6 +66,22 @@ export default function SignUp({navigation}) {
               placeholder="Your Email"
               placeholderTextColor="#666666"
               style={styles.text_input}
+              onChangeText={value => {
+                setEmail(value);
+              }}
+            />
+          </View>
+        </View>
+        <View style={styles.row}>
+          <View style={styles.row_item}>
+            <Text style={styles.field_name}>Mobile Number</Text>
+            <TextInput
+              placeholder="Enter Mobile Number"
+              placeholderTextColor="#666666"
+              style={styles.text_input}
+              onChangeText={value => {
+                setMobNumber(value);
+              }}
             />
           </View>
         </View>
@@ -53,10 +92,13 @@ export default function SignUp({navigation}) {
           <View style={styles.row_item}>
             <DropDownPicker
               items={[
-                {label: 'Adhar Card', value: 'adhar'},
-                {label: 'Pan Card', value: 'pan'},
+                {label: 'Adhar Card', value: 'Adhar Card'},
+                {label: 'Pan Card', value: 'Pan Card'},
               ]}
               containerStyle={{height: 30}}
+              onChangeItem= {item => {
+                setIdCard(item.value);
+              }}
             />
           </View>
         </View>
@@ -67,6 +109,9 @@ export default function SignUp({navigation}) {
               placeholder="Enter Id card Number"
               placeholderTextColor="#666666"
               style={styles.text_input}
+              onChangeText={value => {
+                setIdCardNum(value);
+              }}
             />
           </View>
         </View>
@@ -87,11 +132,14 @@ export default function SignUp({navigation}) {
               placeholder="Re-enter password"
               placeholderTextColor="#666666"
               style={styles.text_input}
+              onChangeText={value => {
+                setPassword(value);
+              }}
             />
           </View>
         </View>
         <View style={styles.button}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onSubmit}>
             <Text style={styles.textSign}>Signup</Text>
           </TouchableOpacity>
         </View>

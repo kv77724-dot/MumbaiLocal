@@ -10,6 +10,7 @@ import {
   ScrollView
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {login} from '../firebase/fire'
 
 var users = [
   {email: 'kv77724@gmail.com', password: '123456'},
@@ -25,15 +26,7 @@ export default function LogIn({navigation}) {
 
   console.log('EMail', email);
 
-  const storeData = async value => {
-    try {
-      await AsyncStorage.setItem('@token', value);
-      console.log('Token to async', value);
-      navigation.navigate('HomePage');
-    } catch (e) {
-      // saving error
-    }
-  };
+  
 
   const getData = async () => {
     try {
@@ -58,17 +51,14 @@ export default function LogIn({navigation}) {
     return re.test(String(email).toLowerCase());
   }
 
-  function login(email, pwd) {
-    users.forEach(user => {
-      if (email === user.email) {
-        if (pwd === user.password) {
-          console.log('Login Successful');
-          storeData('qwerty');
-        } else {
-          console.log('PWD Wrong.', pwd, user.password);
-        }
-      }
-    });
+  const onSubmit = ()=> {
+    console.log("In onsubmit"+email+" "+pwd)
+    try{
+      login(email,pwd);
+    }
+    catch(e){
+      console.log(e)
+    }
   }
 
   return (
@@ -111,11 +101,12 @@ export default function LogIn({navigation}) {
             setPwd(value);
             console.log(value);
           }}
+          secureTextEntry
           // onSubmitEditing={() => validateEmail()}
         />
 
         <View style={styles.button}>
-          <TouchableOpacity onPress={() => login(email, pwd)}>
+          <TouchableOpacity onPress={onSubmit}>
             <Text style={styles.textSign}>Login</Text>
           </TouchableOpacity>
         </View>
@@ -133,13 +124,6 @@ export default function LogIn({navigation}) {
           </TouchableOpacity>
         </View>
       </View>
-
-      {/* <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={
-          Platform.OS === 'ios' ? 40 : 0
-        }></KeyboardAvoidingView> */}
     </View>
     </ScrollView>
   );
