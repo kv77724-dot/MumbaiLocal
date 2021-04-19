@@ -15,29 +15,6 @@ import Payment from './src/components/Payment';
 const AuthStack = createStackNavigator();
 const TicketStack = createStackNavigator();
 
-
-const getData = async () => {
- 
-  try {
-    const value = await AsyncStorage.getItem('@token');
-    if (value !== null) {
-      // value previously stored
-      setAuthToken(value);
-      console.log('Token from async', value);
-    }
-  } catch (e) {
-    // error reading value
-  }
-};
-
-const removeValue = async () => {
-  try {
-    await AsyncStorage.removeItem('@token');
-  } catch (e) {
-    // remove error
-  }
-};
-
 console.log('App launch');
 
 var user = [
@@ -46,41 +23,67 @@ var user = [
   {email: 'sumit23181998gmail.com', password: '123456'},
 ];
 
-
 export default function MainApp() {
-  const [authToken,setAuthToken] = useState(null);
+  const [authToken, setAuthToken] = useState(null);
   useEffect(() => {
     getData();
-    return () => {
-      
+    return () => {};
+  }, [authToken]);
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@token');
+      if (value !== null) {
+        // value previously stored
+        setAuthToken(value);
+        console.log('Token from async', value);
+      }
+    } catch (e) {
+      // error reading value
     }
-  }, [])
+  };
+
+  const removeValue = async () => {
+    try {
+      await AsyncStorage.removeItem('@token');
+      setAuthToken(null);
+    } catch (e) {
+      // remove error
+    }
+  };
+
   return (
     <NavigationContainer>
       {authToken === null ? (
-      
-      <AuthStack.Navigator>
-        {/* <AuthStack.Screen
-          name="LogIn"
-          component={LogIn}
-          options={{title: 'Log In', headerLeft: null,headerStyle: {
-              backgroundColor: '#314e52'
-            },
-            headerTintColor: 'white',}}
-          headerTruncatedBackTitle
-        />
-        <AuthStack.Screen
-          name="SignUp"
-          component={SignUp}
-          options={{title: 'Sign Up', headerLeft: null,headerStyle: {
-              backgroundColor: '#314e52'
-            },
-            headerTintColor: 'white',}}
-          headerTruncatedBackTitle
-        />
-        
-      </AuthStack.Navigator>
-       ) : (
+        <AuthStack.Navigator>
+          <AuthStack.Screen
+            name="LogIn"
+            component={LogIn}
+            options={{
+              title: 'Log In',
+              headerLeft: null,
+              headerStyle: {
+                backgroundColor: '#314e52',
+              },
+              headerTintColor: 'white',
+            }}
+            headerTruncatedBackTitle
+          />
+          <AuthStack.Screen
+            name="SignUp"
+            component={SignUp}
+            options={{
+              title: 'Sign Up',
+              headerLeft: null,
+              headerStyle: {
+                backgroundColor: '#314e52',
+              },
+              headerTintColor: 'white',
+            }}
+            headerTruncatedBackTitle
+          />
+        </AuthStack.Navigator>
+      ) : (
         <TicketStack.Navigator initialRouteName="HomePage">
           <TicketStack.Screen
             name="HomePage"
@@ -89,15 +92,15 @@ export default function MainApp() {
               title: 'Home',
               headerLeft: null,
               headerStyle: {
-                backgroundColor: '#314e52'
+                backgroundColor: '#314e52',
               },
               headerTintColor: 'white',
               headerRight: () => (
                 <View style={{marginRight: 10}}>
                   <Button
                     onPress={() => {
-                      removeValue({navigation});
-                      navigation.navigate('LogIn');
+                      removeValue();
+                      // navigation.navigate('LogIn');
                     }}
                     title="LogOut"
                     color="#314e52"
@@ -109,41 +112,53 @@ export default function MainApp() {
           <TicketStack.Screen
             name="BookTicket"
             component={BookTicket}
-            options={{title: 'Book Ticket',headerStyle: {
-              backgroundColor: '#314e52'
-            },
-            headerTintColor: 'white',}}
+            options={{
+              title: 'Book Ticket',
+              headerStyle: {
+                backgroundColor: '#314e52',
+              },
+              headerTintColor: 'white',
+            }}
             headerTruncatedBackTitle
           />
           <TicketStack.Screen
             name="TicketHistory"
             component={TicketHistory}
-            options={{title: 'Booked Ticket History',headerStyle: {
-              backgroundColor: '#314e52'
-            },
-            headerTintColor: 'white',}}
+            options={{
+              title: 'Booked Ticket History',
+              headerStyle: {
+                backgroundColor: '#314e52',
+              },
+              headerTintColor: 'white',
+            }}
             headerTruncatedBackTitle
           />
           <TicketStack.Screen
             name="Profile"
             component={Profile}
-            options={{title: 'Your Profile',headerStyle: {
-              backgroundColor: '#314e52'
-            },
-            headerTintColor: 'white',}}
+            options={{
+              title: 'Your Profile',
+              headerStyle: {
+                backgroundColor: '#314e52',
+              },
+              headerTintColor: 'white',
+            }}
             headerTruncatedBackTitle
           />
           <TicketStack.Screen
-          name="Payment"
-          component={Payment}
-          options={{title: 'Payment',headerStyle: {
-              backgroundColor: '#314e52'
-            },
-            headerTintColor: 'white',}}
-          headerTruncatedBackTitle
-        />
+            name="Payment"
+            component={Payment}
+            options={{
+              title: 'Payment',
+              headerStyle: {
+                backgroundColor: '#314e52',
+              },
+              headerTintColor: 'white',
+            }}
+            headerTruncatedBackTitle
+          />
         </TicketStack.Navigator>
-      )} 
+      )}
     </NavigationContainer>
   );
 }

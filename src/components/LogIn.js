@@ -7,10 +7,10 @@ import {
   Platform,
   KeyboardAvoidingView,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {login} from '../firebase/fire'
+import {login} from '../firebase/fire';
 
 var users = [
   {email: 'kv77724@gmail.com', password: '123456'},
@@ -25,8 +25,6 @@ export default function LogIn({navigation}) {
   const [loginErr, setLoginErr] = useState('');
 
   console.log('EMail', email);
-
-  
 
   const getData = async () => {
     try {
@@ -51,80 +49,79 @@ export default function LogIn({navigation}) {
     return re.test(String(email).toLowerCase());
   }
 
-  const onSubmit = ()=> {
-    console.log("In onsubmit"+email+" "+pwd)
-    try{
-      login(email,pwd);
+  const onSubmit = () => {
+    console.log('In onsubmit' + email + ' ' + pwd);
+    try {
+      login(email, pwd);
+    } catch (e) {
+      console.log(e);
     }
-    catch(e){
-      console.log(e)
-    }
-  }
+  };
 
   return (
     <ScrollView>
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Welcome back!</Text>
-      </View>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Welcome back!</Text>
+        </View>
 
-      <View style={styles.footer}>
-        {loginErr === '' ? (
-          <View style={{margin: 5}}>
-            <Text style={{color: 'red', fontSize: 14}}>{loginErr}</Text>
+        <View style={styles.footer}>
+          {loginErr === '' ? (
+            <View style={{margin: 5}}>
+              <Text style={{color: 'red', fontSize: 14}}>{loginErr}</Text>
+            </View>
+          ) : null}
+          <Text style={styles.field_name}>Email</Text>
+          <TextInput
+            placeholder="Your Email"
+            placeholderTextColor="#666666"
+            style={styles.text_input}
+            value={email}
+            onChangeText={value => {
+              setEmail(value);
+              validateEmail(email);
+            }}
+            onSubmitEditing={() => validateEmail()}
+          />
+          {setEmailErr !== '' ? (
+            <Text style={{color: 'red', marginVertical: 2}}>{emailErr}</Text>
+          ) : null}
+
+          <Text style={[styles.field_name, {paddingTop: 20}]}>Password</Text>
+          <TextInput
+            minLength={6}
+            maxLength={20}
+            placeholder="Your Password"
+            placeholderTextColor="#666666"
+            style={styles.text_input}
+            onChangeText={value => {
+              setPwd(value);
+              console.log(value);
+            }}
+            secureTextEntry
+            // onSubmitEditing={() => validateEmail()}
+          />
+
+          <View style={styles.button}>
+            <TouchableOpacity onPress={onSubmit}>
+              <Text style={styles.textSign}>Login</Text>
+            </TouchableOpacity>
           </View>
-        ) : null}
-        <Text style={styles.field_name}>Email</Text>
-        <TextInput
-          placeholder="Your Email"
-          placeholderTextColor="#666666"
-          style={styles.text_input}
-          value={email}
-          onChangeText={value => {
-            setEmail(value);
-            validateEmail(email);
-          }}
-          onSubmitEditing={() => validateEmail()}
-        />
-        {setEmailErr !== '' ? (
-          <Text style={{color: 'red', marginVertical: 2}}>{emailErr}</Text>
-        ) : null}
 
-        <Text style={[styles.field_name, {paddingTop: 20}]}>Password</Text>
-        <TextInput
-          minLength={6}
-          maxLength={20}
-          placeholder="Your Password"
-          placeholderTextColor="#666666"
-          style={styles.text_input}
-          onChangeText={value => {
-            setPwd(value);
-            console.log(value);
-          }}
-          secureTextEntry
-          // onSubmitEditing={() => validateEmail()}
-        />
-
-        <View style={styles.button}>
-          <TouchableOpacity onPress={onSubmit}>
-            <Text style={styles.textSign}>Login</Text>
+          <TouchableOpacity>
+            <Text style={styles.forgot_password}>Forgot Password?</Text>
           </TouchableOpacity>
-        </View>
 
-        <TouchableOpacity>
-          <Text style={styles.forgot_password}>Forgot Password?</Text>
-        </TouchableOpacity>
-
-        <View style={styles.new_user}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('SignUp');
-            }}>
-            <Text style={styles.forgot_password}>New User? Sign Up Here</Text>
-          </TouchableOpacity>
+          <View style={styles.new_user}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('SignUp');
+              }}>
+              <Text style={styles.forgot_password}>New User? Sign Up Here</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
     </ScrollView>
   );
 }
