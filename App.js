@@ -59,7 +59,7 @@ export default function MainApp() {
       {/* {token === null ? ( */}
       {/* <AuthStack.Navigator initialRouteName={!isAUth ? 'LogIn' : 'HomePage'}> */}
       <AuthStack.Navigator>
-        <AuthStack.Screen
+        {/* <AuthStack.Screen
           name="LogIn"
           component={LogIn}
           options={{title: 'Log In', headerLeft: null,headerStyle: {
@@ -76,7 +76,7 @@ export default function MainApp() {
             },
             headerTintColor: 'white',}}
           headerTruncatedBackTitle
-        />
+        /> */}
         <AuthStack.Screen
           name="HomePage"
           component={HomePage}
@@ -104,7 +104,7 @@ export default function MainApp() {
             title: 'Home',
             headerLeft: null,
             headerStyle: {
-              backgroundColor: '#314e52'
+              backgroundColor: '#314e52',
             },
             headerTintColor: 'white',
             headerRight: () => (
@@ -125,37 +125,49 @@ export default function MainApp() {
         <AuthStack.Screen
           name="BookTicket"
           component={BookTicket}
-          options={{title: 'Book Ticket',headerStyle: {
-              backgroundColor: '#314e52'
+          options={{
+            title: 'Book Ticket',
+            headerStyle: {
+              backgroundColor: '#314e52',
             },
-            headerTintColor: 'white',}}
+            headerTintColor: 'white',
+          }}
           headerTruncatedBackTitle
         />
         <AuthStack.Screen
           name="TicketHistory"
           component={TicketHistory}
-          options={{title: 'Booked Ticket History',headerStyle: {
-              backgroundColor: '#314e52'
+          options={{
+            title: 'Booked Ticket History',
+            headerStyle: {
+              backgroundColor: '#314e52',
             },
-            headerTintColor: 'white',}}
+            headerTintColor: 'white',
+          }}
           headerTruncatedBackTitle
         />
         <AuthStack.Screen
           name="Profile"
           component={Profile}
-          options={{title: 'Your Profile',headerStyle: {
-              backgroundColor: '#314e52'
+          options={{
+            title: 'Your Profile',
+            headerStyle: {
+              backgroundColor: '#314e52',
             },
-            headerTintColor: 'white',}}
+            headerTintColor: 'white',
+          }}
           headerTruncatedBackTitle
         />
         <AuthStack.Screen
           name="Payment"
           component={Payment}
-          options={{title: 'Payment',headerStyle: {
-              backgroundColor: '#314e52'
+          options={{
+            title: 'Payment',
+            headerStyle: {
+              backgroundColor: '#314e52',
             },
-            headerTintColor: 'white',}}
+            headerTintColor: 'white',
+          }}
           headerTruncatedBackTitle
         />
       </AuthStack.Navigator>
