@@ -159,6 +159,20 @@ export default function MainApp() {
           }}
           headerTruncatedBackTitle
         />
+        <AuthStack.Screen
+          name="PaymentDone"
+          component={PaymentDone}
+          options={{
+            title: 'Payment successful',
+            headerLeft: null,
+            headerStyle: {
+              backgroundColor: '#314e52',
+            },
+            headerTintColor: 'white',
+          }}
+          headerTruncatedBackTitle
+        />
+      
       </AuthStack.Navigator>
     </NavigationContainer>
   );

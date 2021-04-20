@@ -51,7 +51,7 @@ export const getuser = async (value) => {
     return userDoc._data;
 }
 
-export const saveticket = async(uid,source, destination, adult, child, classType, ticketType, ticketForm, fare, timestamp) => {
+export const saveticket = async(uid,source, destination, adult, child, classType, ticketType, ticketForm, fare, timestamp, otp) => {
     await firestore().collection('ticket').add({
         uid: uid,
         source: source,
@@ -62,24 +62,25 @@ export const saveticket = async(uid,source, destination, adult, child, classType
         tickettype: ticketType,
         ticketform: ticketForm,
         fare: fare,
-        timestamp: timestamp
+        timestamp: timestamp,
+        otp: otp
     })
 }
 
 export const ticketlist = async(value)=> {
-    let list;
+    let list = [];
     await firestore()
-    .collection('Users')
+    .collection("ticket")
     .where('uid', '==', value)
     .get()
     .then(querySnapshot => {
-        list = querySnapshot;
+        querySnapshot.forEach(documentSnapshot=>{
+            documentSnapshot._data["ticketid"] = documentSnapshot.id
+            list.push(documentSnapshot._data);
+        });
     });
 
-    // list.forEach(documentSnapshot => {
-    //     console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
-    //   });
-
+    console.log(list)
     return list;
 }
-}
+

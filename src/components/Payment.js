@@ -18,9 +18,15 @@ export default function Payment({route,navigation}) {
 
     let  current = new Date();
     let datetime = (current.toLocaleTimeString() + " "+current.toLocaleDateString());
+    let otp = null;
+
+    if(route.params.ticketform === 'Book & Print (Paper)'){
+      otp = Math.floor(Math.random() * (9999 - 1001 + 1)) + 1001;
+    }
+    
     try{
       saveticket(value,route.params.source, route.params.destination, route.params.adult, route.params.child,
-        route.params.classtype, route.params.tickettype, route.params.ticketform, route.params.fare, datetime)
+        route.params.classtype, route.params.tickettype, route.params.ticketform, route.params.fare, datetime, otp)
     }
     catch(e){
       console.log(e)
