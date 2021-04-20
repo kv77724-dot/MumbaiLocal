@@ -21,6 +21,7 @@ var users = [
 export default function LogIn({navigation}) {
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
+  const [authToken, setAuthToken] = useState(null);
   const [emailErr, setEmailErr] = useState('');
   const [loginErr, setLoginErr] = useState('');
 
@@ -31,6 +32,7 @@ export default function LogIn({navigation}) {
       const value = await AsyncStorage.getItem('@token');
       if (value !== null) {
         // value previously stored
+        setAuthToken(value);
         console.log('Token from async', value);
       }
     } catch (e) {
@@ -49,10 +51,14 @@ export default function LogIn({navigation}) {
     return re.test(String(email).toLowerCase());
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     console.log('In onsubmit' + email + ' ' + pwd);
     try {
       login(email, pwd);
+      await getData();
+      if (authToken !== null) {
+        navigation.navigate('HomePage');
+      }
     } catch (e) {
       console.log(e);
     }
