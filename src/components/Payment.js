@@ -8,8 +8,25 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import RazorpayCheckout from 'react-native-razorpay';
+import {saveticket} from '../firebase/fire';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Payment({route}) {
+export default function Payment({route,navigation}) {
+
+  const bookTicket = async()=>{
+    const value = await AsyncStorage.getItem('@token');
+
+    let  current = new Date();
+    let datetime = (current.toLocaleTimeString() + " "+current.toLocaleDateString());
+    try{
+      saveticket(value,route.params.source, route.params.destination, route.params.adult, route.params.child,
+        route.params.classtype, route.params.tickettype, route.params.ticketform, route.params.fare, datetime)
+    }
+    catch(e){
+      console.log(e)
+    }
+    navigation.navigate('PaymentDone')
+  }
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -123,6 +140,14 @@ export default function Payment({route}) {
                   });
               }}>
               <Text style={styles.textSign}>BOOK TICKET</Text>
+            </TouchableOpacity>
+          </View>
+
+
+          <View style={styles.button}>
+            <TouchableOpacity
+                onPress={bookTicket}>
+                <Text style={styles.textSign}>Fake Button</Text>
             </TouchableOpacity>
           </View>
         </View>
