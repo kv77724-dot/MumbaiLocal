@@ -5,156 +5,269 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {signup} from '../firebase/fire'
+import {signup} from '../firebase/fire';
+const AADHAR_CARD = 'Adhar Card';
+const PAN_CARD = 'Pan Card';
 
 export default function SignUp({navigation}) {
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [mobNumber, setMobNumber] = useState();
-  const [idCard, setIdCard] = useState();
-  const [idCardNum, setIdCardNum] = useState();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [mobNumber, setMobNumber] = useState(null);
+  const [idCard, setIdCard] = useState(null);
+  const [idCardErr, setIdCardErr] = useState(null);
+  const [idCardNum, setIdCardNum] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confPassword, setConfPassword] = useState(null);
+  const [emailErr, setEmailErr] = useState(null);
 
-  const onSubmit = ()=> {
-    try{
-      signup(email,password,firstName,lastName,mobNumber,idCard,idCardNum)
+  const validateAll = function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    console.log('Email', re.test(String(email).toLowerCase()));
+    if (!re.test(String(email).toLowerCase())) {
+      setEmailErr('Invalid Email.');
+    } else {
+      setEmailErr(null);
     }
-    catch(e){
-      console.log(e)
+    return re.test(String(email).toLowerCase());
+  };
+
+  function idValidation(idCardNum) {
+    const re = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+    console.log('Email', idCardNum, re.test(String(idCardNum).toUpperCase()));
+    if (idCard !== AADHAR_CARD) {
+      if (!re.test(String(idCardNum).toUpperCase())) {
+        setIdCardErr('Invalid Pan Card Number.');
+      } else {
+        setIdCardNum(idCardNum.toUpperCase());
+        setIdCardErr(null);
+      }
+      // return re.test(String(email).toLowerCase());
     }
   }
+
+  // const mobileNumberValidate = mobNumber => {
+  //   var val = mobNumber;
+  //   // if (/^\d{10}$/.test(val)) {
+  //   //   // value is ok, use it
+  //   //   console.log('Its 10', val);
+  //   //   setErr(null);
+  //   // } else {
+  //   //   setErr('Invalid number; must be ten digits');
+  //   // }
+
+  //   if (mobNumber?.length < 10) {
+  //     setMobNumberErr('Invalid Mobile Number.');
+  //   }
+  // };
+  const onSubmit = () => {
+    try {
+      signup(
+        email,
+        password,
+        firstName,
+        lastName,
+        mobNumber,
+        idCard,
+        idCardNum,
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <ScrollView>
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Create Account</Text>
-      </View>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Create Account</Text>
+        </View>
 
-      <View style={styles.footer}>
-        <View style={styles.row}>
-          <View style={[styles.row_item, {marginRight: 10}]}>
-            <Text style={styles.field_name}>First Name</Text>
-            <TextInput
-              placeholder="First Name"
-              placeholderTextColor="#666666"
-              style={styles.text_input}
-              onChangeText={value => {
-                setFirstName(value);
-              }}
-            />
+        <View style={styles.footer}>
+          <View style={styles.row}>
+            <View style={[styles.row_item, {marginRight: 10}]}>
+              <Text style={styles.field_name}>First Name</Text>
+              <TextInput
+                placeholder="First Name"
+                placeholderTextColor="#666666"
+                style={styles.text_input}
+                onChangeText={value => {
+                  setFirstName(value);
+                }}
+              />
+              {firstName === '' ? (
+                <Text style={{color: 'red', marginVertical: 2}}>
+                  Required field
+                </Text>
+              ) : null}
+            </View>
+            <View style={[styles.row_item, {marginLeft: 10}]}>
+              <Text style={styles.field_name}>Last Name</Text>
+              <TextInput
+                placeholder="Last Name"
+                placeholderTextColor="#666666"
+                style={styles.text_input}
+                onChangeText={value => {
+                  setLastName(value);
+                }}
+              />
+              {lastName === '' ? (
+                <Text style={{color: 'red', marginVertical: 2}}>
+                  Required field
+                </Text>
+              ) : null}
+            </View>
           </View>
-          <View style={[styles.row_item, {marginLeft: 10}]}>
-            <Text style={styles.field_name}>Last Name</Text>
-            <TextInput
-              placeholder="Last Name"
-              placeholderTextColor="#666666"
-              style={styles.text_input}
-              onChangeText={value => {
-                setLastName(value);
-              }}
-            />
+          <View style={styles.row}>
+            <View style={styles.row_item}>
+              <Text style={styles.field_name}>Email</Text>
+              <TextInput
+                placeholder="Your Email"
+                placeholderTextColor="#666666"
+                style={styles.text_input}
+                onChangeText={value => {
+                  setEmail(value);
+                  validateEmail(email);
+                }}
+              />
+              {emailErr !== null ? (
+                <Text style={{color: 'red', marginVertical: 2}}>
+                  Required field. {emailErr}
+                </Text>
+              ) : null}
+            </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.row_item}>
-            <Text style={styles.field_name}>Email</Text>
-            <TextInput
-              placeholder="Your Email"
-              placeholderTextColor="#666666"
-              style={styles.text_input}
-              onChangeText={value => {
-                setEmail(value);
-              }}
-            />
+          <View style={styles.row}>
+            <View style={styles.row_item}>
+              <Text style={styles.field_name}>Mobile Number</Text>
+              <TextInput
+                maxLength={10}
+                keyboardType="numeric"
+                placeholder="Enter Mobile Number"
+                placeholderTextColor="#666666"
+                style={styles.text_input}
+                value={mobNumber}
+                onChangeText={value => {
+                  setMobNumber(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, ''));
+                }}
+              />
+              {mobNumber?.length < 10 ? (
+                <Text style={{color: 'red', marginVertical: 2}}>
+                  Invalid Mobile Number.
+                </Text>
+              ) : null}
+            </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.row_item}>
-            <Text style={styles.field_name}>Mobile Number</Text>
-            <TextInput
-              placeholder="Enter Mobile Number"
-              placeholderTextColor="#666666"
-              style={styles.text_input}
-              onChangeText={value => {
-                setMobNumber(value);
-              }}
-            />
+          <View style={styles.row}>
+            <View style={styles.row_item}>
+              <Text style={styles.field_name}>Choose Id Card:</Text>
+            </View>
+            <View style={styles.row_item}>
+              <DropDownPicker
+                items={[
+                  {label: AADHAR_CARD, value: AADHAR_CARD},
+                  {label: PAN_CARD, value: PAN_CARD},
+                ]}
+                containerStyle={{height: 30}}
+                onChangeItem={item => {
+                  setIdCard(item.value);
+                  console.log('Value', item.value);
+                  setIdCardNum(null);
+                }}
+              />
+            </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.row_item}>
-            <Text style={styles.field_name}>Choose Id Card:</Text>
+          <View style={styles.row}>
+            <View style={styles.row_item}>
+              <Text style={styles.field_name}>Id Card Number</Text>
+              <TextInput
+                keyboardType={idCard === 'Adhar Card' ? 'numeric' : null}
+                placeholder="Enter Id card Number"
+                maxLength={idCard === 'Adhar Card' ? 12 : 10}
+                placeholderTextColor="#666666"
+                style={styles.text_input}
+                value={idCardNum}
+                onChangeText={value => {
+                  console.log('Va;ue', value);
+                  var val = value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, '');
+                  setIdCardNum(val);
+                  idValidation(value);
+                }}
+              />
+              <View style={{flexDirection: 'row', marginLeft: 5}}>
+                {idCardNum === '' ? (
+                  <Text style={{color: 'red', marginVertical: 2}}>
+                    Required field
+                  </Text>
+                ) : null}
+                {idCardErr !== null ? (
+                  <Text style={{color: 'red', marginVertical: 2}}>
+                    {idCardErr}
+                  </Text>
+                ) : null}
+              </View>
+            </View>
           </View>
-          <View style={styles.row_item}>
-            <DropDownPicker
-              items={[
-                {label: 'Adhar Card', value: 'Adhar Card'},
-                {label: 'Pan Card', value: 'Pan Card'},
-              ]}
-              containerStyle={{height: 30}}
-              onChangeItem= {item => {
-                setIdCard(item.value);
-              }}
-            />
+          <View style={styles.row}>
+            <View style={styles.row_item}>
+              <Text style={styles.field_name}>Password</Text>
+              <TextInput
+                maxLength={20}
+                secureTextEntry={true}
+                placeholder="Enter your password"
+                placeholderTextColor="#666666"
+                style={styles.text_input}
+                onChangeText={value => {
+                  setPassword(value);
+                }}
+              />
+              {confPassword !== null && confPassword !== password ? (
+                <Text style={{color: 'red', marginVertical: 2}}>
+                  Password Does not Match.
+                </Text>
+              ) : null}
+            </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.row_item}>
-            <Text style={styles.field_name}>Id Card Number</Text>
-            <TextInput
-              placeholder="Enter Id card Number"
-              placeholderTextColor="#666666"
-              style={styles.text_input}
-              onChangeText={value => {
-                setIdCardNum(value);
-              }}
-            />
+          <View style={styles.row}>
+            <View style={styles.row_item}>
+              <Text style={styles.field_name}>Confirm Password</Text>
+              <TextInput
+                maxLength={20}
+                secureTextEntry={true}
+                placeholder="Re-enter password"
+                placeholderTextColor="#666666"
+                style={styles.text_input}
+                onChangeText={value => {
+                  setConfPassword(value);
+                }}
+              />
+              {confPassword !== password ? (
+                <Text style={{color: 'red', marginVertical: 2}}>
+                  Password Does not Match.
+                </Text>
+              ) : null}
+            </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.row_item}>
-            <Text style={styles.field_name}>Password</Text>
-            <TextInput
-              placeholder="Enter your password"
-              placeholderTextColor="#666666"
-              style={styles.text_input}
-            />
+          <View style={styles.button}>
+            <TouchableOpacity onPress={onSubmit}>
+              <Text style={styles.textSign}>Signup</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.row_item}>
-            <Text style={styles.field_name}>Confirm Password</Text>
-            <TextInput
-              placeholder="Re-enter password"
-              placeholderTextColor="#666666"
-              style={styles.text_input}
-              onChangeText={value => {
-                setPassword(value);
-              }}
-            />
+          <View style={styles.new_user}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('LogIn');
+              }}>
+              <Text style={styles.forgot_password}>
+                Already a User? Sign In Here
+              </Text>
+            </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity onPress={onSubmit}>
-            <Text style={styles.textSign}>Signup</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.new_user}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('LogIn');
-            }}>
-            <Text style={styles.forgot_password}>
-              Already a User? Sign In Here
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
-    </View>
     </ScrollView>
   );
 }

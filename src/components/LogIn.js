@@ -89,7 +89,7 @@ export default function LogIn({navigation}) {
             }}
             onSubmitEditing={() => validateEmail()}
           />
-          {setEmailErr !== '' ? (
+          {emailErr !== '' ? (
             <Text style={{color: 'red', marginVertical: 2}}>{emailErr}</Text>
           ) : null}
 
@@ -109,7 +109,12 @@ export default function LogIn({navigation}) {
           />
 
           <View style={styles.button}>
-            <TouchableOpacity onPress={onSubmit}>
+            <TouchableOpacity
+              onPress={() => {
+                pwd !== '' && email !== ''
+                  ? onSubmit()
+                  : console.log('Empty String');
+              }}>
               <Text style={styles.textSign}>Login</Text>
             </TouchableOpacity>
           </View>
