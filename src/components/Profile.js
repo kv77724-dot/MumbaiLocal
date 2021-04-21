@@ -1,79 +1,107 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
   View,
-  TextInput
+  TextInput,
+  ScrollView
 } from 'react-native';
 import { Avatar } from "react-native-elements";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getuser} from '../firebase/fire'
 
 
 export default function SignUp({navigation}) {
-  const user = {
-    firstname: 'Sumit' ,lastname:'Pai', email:'sumit23181998@gmail.com', cardtype: 'Adhar Card', cardnumber: '1452 6589 7139'
+
+  const [user,setUser] = useState(null)
+
+  useEffect(() => {
+    
+    userInit();
+    return () => {
+    }
+  }, [])
+
+  const userInit = async()=>{
+    const value = await AsyncStorage.getItem('@token');
+    const ret = await getuser(value);
+    console.log(ret)
+    setUser(ret);
   }
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Avatar
-          rounded
-          size='large'
-          icon={{name: 'user', type: 'font-awesome'}}
-          containerStyle={{backgroundColor:'black',marginTop:20}}
-        />
-      </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Avatar
+            rounded
+            size='large'
+            icon={{name: 'user', type: 'font-awesome'}}
+            containerStyle={{backgroundColor:'black',marginTop:20}}
+          />
+        </View>
 
-      <View style={styles.footer}>
-        <View style={styles.row}>
-          <View style={[styles.row_item, {marginRight: 10}]}>
-            <Text style={styles.field_name}>First Name</Text>
-            <TextInput
-              defaultValue={user.firstname}
-              style={styles.text_input}
-              editable={false}
-            />
+        <View style={styles.footer}>
+          <View style={styles.row}>
+            <View style={[styles.row_item, {marginRight: 10}]}>
+              <Text style={styles.field_name}>First Name</Text>
+              <TextInput
+                defaultValue={user?.firstname}
+                style={styles.text_input}
+                editable={false}
+              />
+            </View>
+            <View style={[styles.row_item, {marginLeft: 10}]}>
+              <Text style={styles.field_name}>Last Name</Text>
+              <TextInput
+                defaultValue={user?.lastname}
+                style={styles.text_input}
+                editable={false}
+              />
+            </View>
           </View>
-          <View style={[styles.row_item, {marginLeft: 10}]}>
-            <Text style={styles.field_name}>Last Name</Text>
-            <TextInput
-              defaultValue={user.lastname}
-              style={styles.text_input}
-              editable={false}
-            />
+          <View style={styles.row}>
+            <View style={styles.row_item}>
+              <Text style={styles.field_name}>Email</Text>
+              <TextInput
+                defaultValue={user?.email}
+                style={styles.text_input}
+                editable={false}
+              />
+            </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.row_item}>
-            <Text style={styles.field_name}>Email</Text>
-            <TextInput
-              defaultValue={user.email}
-              style={styles.text_input}
-              editable={false}
-            />
+          <View style={styles.row}>
+            <View style={styles.row_item}>
+              <Text style={styles.field_name}>Mobile Number</Text>
+              <TextInput
+                defaultValue={user?.mobilenumber}
+                style={styles.text_input}
+                editable={false}
+              />
+            </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.row_item}>
-            <Text style={styles.field_name}>Id Card Type</Text>
-            <TextInput
-              defaultValue={user.cardtype}
-              style={styles.text_input}
-              editable={false}
-            />
+          <View style={styles.row}>
+            <View style={styles.row_item}>
+              <Text style={styles.field_name}>Id Card Type</Text>
+              <TextInput
+                defaultValue={user?.idcard}
+                style={styles.text_input}
+                editable={false}
+              />
+            </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.row_item}>
-            <Text style={styles.field_name}>Id Card Number</Text>
-            <TextInput
-              defaultValue={user.cardnumber}
-              style={styles.text_input}
-              editable={false}
-            />
+          <View style={styles.row}>
+            <View style={styles.row_item}>
+              <Text style={styles.field_name}>Id Card Number</Text>
+              <TextInput
+                defaultValue={user?.idcardnumber}
+                style={styles.text_input}
+                editable={false}
+              />
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

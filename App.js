@@ -11,7 +11,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Icon, CheckBox} from 'react-native-elements';
 import Payment from './src/components/Payment';
-import {login} from './src/firebase/fire';
+import PaymentDone from './src/components/PaymentDone';
 
 const AuthStack = createStackNavigator();
 const TicketStack = createStackNavigator();
@@ -162,6 +162,20 @@ export default function MainApp() {
           }}
           headerTruncatedBackTitle
         />
+        <AuthStack.Screen
+          name="PaymentDone"
+          component={PaymentDone}
+          options={{
+            title: 'Payment successful',
+            headerLeft: null,
+            headerStyle: {
+              backgroundColor: '#314e52',
+            },
+            headerTintColor: 'white',
+          }}
+          headerTruncatedBackTitle
+        />
+      
       </AuthStack.Navigator>
     </NavigationContainer>
   );
