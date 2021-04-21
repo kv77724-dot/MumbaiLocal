@@ -84,6 +84,7 @@ export default function SignUp({navigation}) {
         idCard,
         idCardNum,
       );
+      console.log('Sumit clicked', errorMessage);
       alert('Registration Successful');
       setSignUpErr(null);
       navigation.navigate('LogIn');
@@ -95,7 +96,7 @@ export default function SignUp({navigation}) {
       console.log(e);
     }
   };
-
+  const onPressDebounced = debounce(() => this.onPressed(), 500);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -289,6 +290,7 @@ export default function SignUp({navigation}) {
             <TouchableOpacity
               onPress={() => {
                 isValid ? onSubmit() : alert('Please Fill All the Details!');
+                onPressDebounced();
               }}>
               <Text style={styles.textSign}>Signup</Text>
             </TouchableOpacity>
