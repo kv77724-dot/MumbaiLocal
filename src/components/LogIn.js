@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -19,11 +19,18 @@ var users = [
 ];
 
 export default function LogIn({navigation}) {
-  const [email, setEmail] = useState('');
-  const [pwd, setPwd] = useState('');
+  const [email, setEmail] = useState(null);
+  const [pwd, setPwd] = useState(null);
   const [authToken, setAuthToken] = useState(null);
-  const [emailErr, setEmailErr] = useState('');
-  const [loginErr, setLoginErr] = useState('');
+  const [emailErr, setEmailErr] = useState(null);
+  const [loginErr, setLoginErr] = useState(null);
+
+  useEffect(() => {
+    return () => {
+      setEmail(null);
+      setPwd(null);
+    };
+  }, []);
 
   const getData = async () => {
     try {
@@ -31,6 +38,9 @@ export default function LogIn({navigation}) {
       if (value !== null) {
         // value previously stored
         setAuthToken(value);
+        setEmail(null);
+        setPwd(null);
+        navigation.navigate('HomePage');
         console.log('Token from async', value);
       }
     } catch (e) {
@@ -44,7 +54,7 @@ export default function LogIn({navigation}) {
     if (!re.test(String(email).toLowerCase())) {
       setEmailErr('Invalid Email');
     } else {
-      setEmailErr('');
+      setEmailErr(null);
     }
     return re.test(String(email).toLowerCase());
   }
@@ -54,16 +64,17 @@ export default function LogIn({navigation}) {
     try {
       let errorMessage = await login(email, pwd);
       await getData();
-        if (authToken !== null) {
-          setLoginErr('');
-          navigation.navigate('HomePage');
-        }
-      if(errorMessage !== null){
-        setLoginErr(errorMessage)
+      if (authToken !== null) {
+        setLoginErr(null);
+        setAuthToken(null);
+        // navigation.navigate('HomePage');
+      }
+      if (errorMessage !== null) {
+        setLoginErr(errorMessage);
       }
     } catch (e) {
       console.log(e);
-      setLoginErr(e)
+      setLoginErr(e);
     }
   };
 
@@ -75,7 +86,6 @@ export default function LogIn({navigation}) {
         </View>
 
         <View style={styles.footer}>
-          
           <Text style={styles.field_name}>Email</Text>
           <TextInput
             placeholder="Your Email"
@@ -88,7 +98,7 @@ export default function LogIn({navigation}) {
             }}
             onSubmitEditing={() => validateEmail()}
           />
-          {emailErr !== '' ? (
+          {emailErr !== null ? (
             <Text style={{color: 'red', marginVertical: 2}}>{emailErr}</Text>
           ) : null}
 
@@ -99,33 +109,46 @@ export default function LogIn({navigation}) {
             placeholder="Your Password"
             placeholderTextColor="#666666"
             style={styles.text_input}
+            value={pwd}
             onChangeText={value => {
               setPwd(value);
             }}
             secureTextEntry
             // onSubmitEditing={() => validateEmail()}
           />
+          {pwd?.length < 6 ? (
+            <Text style={{color: 'red', marginVertical: 2}}>
+              Password Should be Minimum of 6 characters.
+            </Text>
+          ) : null}
 
-          {loginErr === '' ? null : (
-            <View style={{margin: 5,justifyContent:'center',alignItems:'center'}}>
-              <Text style={{color: 'red', fontSize: 14}}>{loginErr}</Text>
+          {loginErr === null ? null : (
+            <View
+              style={{
+                margin: 5,
+                justifyContent: 'center',
+                // alignItems: 'center',
+              }}>
+              <Text style={{color: 'red', fontSize: 14}}>
+                {loginErr.toUpperCase()}
+              </Text>
             </View>
           )}
 
           <View style={styles.button}>
             <TouchableOpacity
               onPress={() => {
-                pwd !== '' && email !== ''
+                pwd?.length > 5 && emailErr === null && email !== null
                   ? onSubmit()
-                  : console.log('Empty String');
+                  : alert('Please Fill All The Details Correctly!');
               }}>
               <Text style={styles.textSign}>Login</Text>
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Text style={styles.forgot_password}>Forgot Password?</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={styles.new_user}>
             <TouchableOpacity

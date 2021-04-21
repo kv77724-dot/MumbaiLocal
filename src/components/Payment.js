@@ -11,28 +11,38 @@ import RazorpayCheckout from 'react-native-razorpay';
 import {saveticket} from '../firebase/fire';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Payment({route,navigation}) {
-
-  const bookTicket = async()=>{
+export default function Payment({route, navigation}) {
+  const bookTicket = async () => {
     const value = await AsyncStorage.getItem('@token');
 
-    let  current = new Date();
-    let datetime = (current.toLocaleTimeString() + " "+current.toLocaleDateString());
+    let current = new Date();
+    let datetime =
+      current.toLocaleTimeString() + ' ' + current.toLocaleDateString();
     let otp = null;
 
-    if(route.params.ticketform === 'Book & Print (Paper)'){
+    if (route.params.ticketform === 'Book & Print (Paper)') {
       otp = Math.floor(Math.random() * (9999 - 1001 + 1)) + 1001;
     }
-    
-    try{
-      saveticket(value,route.params.source, route.params.destination, route.params.adult, route.params.child,
-        route.params.classtype, route.params.tickettype, route.params.ticketform, route.params.fare, datetime, otp)
+
+    try {
+      saveticket(
+        value,
+        route.params.source,
+        route.params.destination,
+        route.params.adult,
+        route.params.child,
+        route.params.classtype,
+        route.params.tickettype,
+        route.params.ticketform,
+        route.params.fare,
+        datetime,
+        otp,
+      );
+    } catch (e) {
+      console.log(e);
     }
-    catch(e){
-      console.log(e)
-    }
-    navigation.navigate('PaymentDone')
-  }
+    navigation.navigate('PaymentDone');
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -126,8 +136,8 @@ export default function Payment({route,navigation}) {
                     'https://cdn.slidesharecdn.com/ss_thumbnails/mumbailocal-130224045152-phpapp02-thumbnail-4.jpg?cb=1361681553',
                   currency: 'INR',
                   key: 'rzp_live_39G4t1IozUX72H', // Your api key
-                  amount: '100',
-                  name: 'foo',
+                  amount: route.params.fare * 100,
+                  name: `${route.params.source}-${route.params.destination}`,
                   prefill: {
                     email: '',
                     contact: '',
@@ -138,24 +148,26 @@ export default function Payment({route,navigation}) {
                 RazorpayCheckout.open(options)
                   .then(data => {
                     // handle success
-                    alert(`Success: ${data.razorpay_payment_id}`);
+                    // alert(
+                    //   `Success: Your Payment ID ${data.razorpay_payment_id}`,
+                    // );
+                    bookTicket();
                   })
                   .catch(error => {
                     // handle failure
-                    alert(`Error: ${error.code} | ${error.description}`);
+                    // alert(`Error: ${error.code} | ${error.description}`);
+                    alert(`Payment Cancelled By User!`);
                   });
               }}>
               <Text style={styles.textSign}>BOOK TICKET</Text>
             </TouchableOpacity>
           </View>
 
-
-          <View style={styles.button}>
-            <TouchableOpacity
-                onPress={bookTicket}>
-                <Text style={styles.textSign}>Fake Button</Text>
+          {/* <View style={styles.button}>
+            <TouchableOpacity onPress={bookTicket}>
+              <Text style={styles.textSign}>Fake Button</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </View>
     </ScrollView>

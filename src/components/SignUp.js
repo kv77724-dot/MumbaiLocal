@@ -23,8 +23,18 @@ export default function SignUp({navigation}) {
   const [password, setPassword] = useState(null);
   const [confPassword, setConfPassword] = useState(null);
   const [emailErr, setEmailErr] = useState(null);
+  const [SignUpErr, setSignUpErr] = useState(null);
 
-  const validateAll = function validateEmail(email) {
+  var isValid =
+    firstName?.length > 0 &&
+    lastName?.length > 0 &&
+    mobNumber?.length === 10 &&
+    idCardErr === null &&
+    emailErr === null &&
+    password === confPassword &&
+    password?.length > 5;
+
+  function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     console.log('Email', re.test(String(email).toLowerCase()));
     if (!re.test(String(email).toLowerCase())) {
@@ -33,7 +43,7 @@ export default function SignUp({navigation}) {
       setEmailErr(null);
     }
     return re.test(String(email).toLowerCase());
-  };
+  }
 
   function idValidation(idCardNum) {
     const re = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
@@ -63,9 +73,9 @@ export default function SignUp({navigation}) {
   //     setMobNumberErr('Invalid Mobile Number.');
   //   }
   // };
-  const onSubmit = () => {
+  const onSubmit = async () => {
     try {
-      signup(
+      let errorMessage = await signup(
         email,
         password,
         firstName,
@@ -74,6 +84,13 @@ export default function SignUp({navigation}) {
         idCard,
         idCardNum,
       );
+      alert('Registration Successful');
+      setSignUpErr(null);
+      navigation.navigate('LogIn');
+      if (errorMessage !== null) {
+        console.log('Error message', errorMessage);
+        setSignUpErr(errorMessage);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -229,6 +246,11 @@ export default function SignUp({navigation}) {
                   Password Does not Match.
                 </Text>
               ) : null}
+              {password?.length < 6 ? (
+                <Text style={{color: 'red', marginVertical: 2}}>
+                  Password Should be Minimum of 6 characters.
+                </Text>
+              ) : null}
             </View>
           </View>
           <View style={styles.row}>
@@ -251,8 +273,23 @@ export default function SignUp({navigation}) {
               ) : null}
             </View>
           </View>
+          {SignUpErr === null ? null : (
+            <View
+              style={{
+                margin: 5,
+                justifyContent: 'center',
+                // alignItems: 'center',
+              }}>
+              <Text style={{color: 'red', fontSize: 14}}>
+                {SignUpErr.toUpperCase()}
+              </Text>
+            </View>
+          )}
           <View style={styles.button}>
-            <TouchableOpacity onPress={onSubmit}>
+            <TouchableOpacity
+              onPress={() => {
+                isValid ? onSubmit() : alert('Please Fill All the Details!');
+              }}>
               <Text style={styles.textSign}>Signup</Text>
             </TouchableOpacity>
           </View>

@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Icon, CheckBox} from 'react-native-elements';
 import Payment from './src/components/Payment';
 import PaymentDone from './src/components/PaymentDone';
+import {HeaderBackButton} from '@react-navigation/stack';
 
 const AuthStack = createStackNavigator();
 const TicketStack = createStackNavigator();
@@ -53,6 +54,7 @@ export default function MainApp() {
     try {
       await AsyncStorage.removeItem('@token');
       setAuthToken(null);
+      // navigation.navigate('LogIn');
     } catch (e) {
       // remove error
     }
@@ -129,13 +131,38 @@ export default function MainApp() {
         <AuthStack.Screen
           name="TicketHistory"
           component={TicketHistory}
-          options={{
+          // options={{
+          //   title: 'Booked Ticket History',
+          //   headerStyle: {
+          //     backgroundColor: '#314e52',
+          //   },
+          //   headerLeft: props => (
+          //     <HeaderBackButton
+          //       onPress={() => {
+          //         // Do something
+          //         console.log('Pressing....');
+          //         navigation.navigate('HomePage');
+          //       }}
+          //     />
+          //   ),
+          //   headerTintColor: 'white',
+          // }}
+          options={({route, navigation}) => ({
             title: 'Booked Ticket History',
             headerStyle: {
               backgroundColor: '#314e52',
             },
             headerTintColor: 'white',
-          }}
+            headerLeft: props => (
+              <HeaderBackButton
+                onPress={() => {
+                  // Do something
+                  console.log('Pressing....');
+                  navigation.navigate('HomePage');
+                }}
+              />
+            ),
+          })}
           headerTruncatedBackTitle
         />
         <AuthStack.Screen
@@ -175,7 +202,6 @@ export default function MainApp() {
           }}
           headerTruncatedBackTitle
         />
-      
       </AuthStack.Navigator>
     </NavigationContainer>
   );
