@@ -73,11 +73,11 @@ export default function BookTicket() {
   );
   return (
     <View style={styles.container}>
-      <FlatList
+      {data.length === 0 ? <Text>Nothing to show. Please book your ticket first.</Text>: <FlatList
         data={data}
         keyExtractor={item => item.id}
         renderItem={renderItem}
-      />
+      />}
     </View>
   );
 }

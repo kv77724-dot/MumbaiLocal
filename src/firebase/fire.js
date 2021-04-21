@@ -3,20 +3,23 @@ import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const login = async (email, password) => {
-  console.log('In fire login ' + email + ' ' + password);
+    let errorMessage = null;
   await auth()
     .signInWithEmailAndPassword(email, password)
     .then(value => {
-      console.log(value);
+    //   console.log(value);
       storeData(value?.user?.uid);
+    }).catch(error => {
+        console.log(error.code);
+        errorMessage = error.code;
     });
+    return errorMessage;
 };
 
 const storeData = async value => {
   try {
     await AsyncStorage.setItem('@token', value);
     console.log('Token to async', value);
-    // navigation.navigate('HomePage');
   } catch (e) {
     // saving error
   }
@@ -47,7 +50,7 @@ export const getuser = async (value) => {
    
     const userDoc = await firestore().collection("users").doc(value).get();
     
-    console.log(userDoc._data)
+    // console.log(userDoc._data)
     return userDoc._data;
 }
 
@@ -72,6 +75,7 @@ export const ticketlist = async(value)=> {
     await firestore()
     .collection("ticket")
     .where('uid', '==', value)
+    .orderBy('timestamp', 'desc')
     .get()
     .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot=>{
@@ -79,8 +83,7 @@ export const ticketlist = async(value)=> {
             list.push(documentSnapshot._data);
         });
     });
-
-    console.log(list)
+    // console.log(list)
     return list;
 }
 

@@ -25,8 +25,6 @@ export default function LogIn({navigation}) {
   const [emailErr, setEmailErr] = useState('');
   const [loginErr, setLoginErr] = useState('');
 
-  console.log('EMail', email);
-
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem('@token');
@@ -42,7 +40,7 @@ export default function LogIn({navigation}) {
 
   function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    console.log('Email', re.test(String(email).toLowerCase()));
+    // console.log('Email', re.test(String(email).toLowerCase()));
     if (!re.test(String(email).toLowerCase())) {
       setEmailErr('Invalid Email');
     } else {
@@ -52,15 +50,20 @@ export default function LogIn({navigation}) {
   }
 
   const onSubmit = async () => {
-    console.log('In onsubmit' + email + ' ' + pwd);
+    // console.log('In onsubmit' + email + ' ' + pwd);
     try {
-      login(email, pwd);
+      let errorMessage = await login(email, pwd);
       await getData();
-      if (authToken !== null) {
-        navigation.navigate('HomePage');
+        if (authToken !== null) {
+          setLoginErr('');
+          navigation.navigate('HomePage');
+        }
+      if(errorMessage !== null){
+        setLoginErr(errorMessage)
       }
     } catch (e) {
       console.log(e);
+      setLoginErr(e)
     }
   };
 
@@ -72,11 +75,7 @@ export default function LogIn({navigation}) {
         </View>
 
         <View style={styles.footer}>
-          {loginErr === '' ? (
-            <View style={{margin: 5}}>
-              <Text style={{color: 'red', fontSize: 14}}>{loginErr}</Text>
-            </View>
-          ) : null}
+          
           <Text style={styles.field_name}>Email</Text>
           <TextInput
             placeholder="Your Email"
@@ -102,11 +101,16 @@ export default function LogIn({navigation}) {
             style={styles.text_input}
             onChangeText={value => {
               setPwd(value);
-              console.log(value);
             }}
             secureTextEntry
             // onSubmitEditing={() => validateEmail()}
           />
+
+          {loginErr === '' ? null : (
+            <View style={{margin: 5,justifyContent:'center',alignItems:'center'}}>
+              <Text style={{color: 'red', fontSize: 14}}>{loginErr}</Text>
+            </View>
+          )}
 
           <View style={styles.button}>
             <TouchableOpacity onPress={onSubmit}>
