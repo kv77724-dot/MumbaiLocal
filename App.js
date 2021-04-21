@@ -29,7 +29,9 @@ export default function MainApp() {
   const [currentRoute, setCurrentRoute] = useState('LogIn');
 
   useEffect(() => {
+    // async function() {
     getData();
+    // }
     return () => {};
   }, [authToken, currentRoute]);
 
@@ -57,6 +59,7 @@ export default function MainApp() {
   };
 
   console.log('Token is', authToken);
+
   return (
     <NavigationContainer>
       <AuthStack.Navigator initialRouteName={currentRoute}>
