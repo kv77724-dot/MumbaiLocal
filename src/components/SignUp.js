@@ -84,16 +84,16 @@ export default function SignUp({navigation}) {
         idCard,
         idCardNum,
       );
-      console.log('Sumit clicked', errorMessage);
-      alert('Registration Successful');
-      setSignUpErr(null);
+      //alert('Registration Successful');
+      // if (errorMessage !== null) {
+      //   console.log("//////////")
+      //   console.log('Error message', errorMessage);
+      //   setSignUpErr(errorMessage);
+      // }
       navigation.navigate('LogIn');
-      if (errorMessage !== null) {
-        console.log('Error message', errorMessage);
-        setSignUpErr(errorMessage);
-      }
     } catch (e) {
       console.log(e);
+      setSignUpErr(e.code);
     }
   };
   const onPressDebounced = debounce(() => this.onPressed(), 500);
@@ -282,7 +282,7 @@ export default function SignUp({navigation}) {
                 // alignItems: 'center',
               }}>
               <Text style={{color: 'red', fontSize: 14}}>
-                {SignUpErr.toUpperCase()}
+                {SignUpErr}
               </Text>
             </View>
           )}
