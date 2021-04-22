@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import {debounce} from 'debounce';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {signup} from '../firebase/fire';
 const AADHAR_CARD = 'Adhar Card';
@@ -24,6 +25,7 @@ export default function SignUp({navigation}) {
   const [confPassword, setConfPassword] = useState(null);
   const [emailErr, setEmailErr] = useState(null);
   const [SignUpErr, setSignUpErr] = useState(null);
+  const [pressed, setPressed] = useState(false);
 
   var isValid =
     firstName?.length > 0 &&
@@ -96,7 +98,8 @@ export default function SignUp({navigation}) {
       setSignUpErr(e.code);
     }
   };
-  const onPressDebounced = debounce(() => this.onPressed(), 500);
+  // const onPressed = setPressed(true);
+  const onPressDebounced = debounce(() => console.log('Hello boi'), 2000);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -282,7 +285,7 @@ export default function SignUp({navigation}) {
                 // alignItems: 'center',
               }}>
               <Text style={{color: 'red', fontSize: 14}}>
-                {SignUpErr}
+                {SignUpErr.toUpperCase()}
               </Text>
             </View>
           )}
