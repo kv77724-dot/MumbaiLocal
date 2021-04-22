@@ -21,6 +21,7 @@ export default function BookTicket() {
     return () => {};
   }, []);
 
+  console.log('DATA', JSON.stringify(data, null, 4));
   const getList = async () => {
     const value = await AsyncStorage.getItem('@token');
     const ret = await getuser(value);
@@ -74,7 +75,7 @@ export default function BookTicket() {
           alignSelf: 'stretch',
         }}>
         {item?.ticketform === 'Book with ID (Paperless)' && (
-          <Text style={{paddingVertical: 8}}>
+          <Text style={{paddingVertical: 8, marginRight: 3}}>
             Adhar/PAN No: {user?.idcardnumber}
           </Text>
         )}

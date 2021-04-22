@@ -49,7 +49,11 @@ export default function SignUp({navigation}) {
 
   function idValidation(idCardNum) {
     const re = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
-    console.log('Email', idCardNum, re.test(String(idCardNum).toUpperCase()));
+    // console.log(
+    //   'Email',
+    //   typeof idCardNum,
+    //   re.test(String(idCardNum).toUpperCase()),
+    // );
     if (idCard !== AADHAR_CARD) {
       if (!re.test(String(idCardNum).toUpperCase())) {
         setIdCardErr('Invalid Pan Card Number.');
@@ -58,6 +62,13 @@ export default function SignUp({navigation}) {
         setIdCardErr(null);
       }
       // return re.test(String(email).toLowerCase());
+    } else {
+      // let regEx = /^[0–9]{12}$/;
+      let regEx = /^\d{12}$/;
+      let result = regEx.test(idCardNum);
+      console.log('RESULT', result);
+      setIdCardNum(idCardNum);
+      setIdCardErr(result ? null : 'Invalid Aadhar Card Number');
     }
   }
 
@@ -197,6 +208,8 @@ export default function SignUp({navigation}) {
                   setIdCard(item.value);
                   console.log('Value', item.value);
                   setIdCardNum(null);
+                  idValidation(null);
+                  setIdCardErr(null);
                 }}
               />
             </View>
@@ -205,6 +218,7 @@ export default function SignUp({navigation}) {
             <View style={styles.row_item}>
               <Text style={styles.field_name}>Id Card Number</Text>
               <TextInput
+                editable={idCard === null ? false : true}
                 keyboardType={idCard === 'Adhar Card' ? 'numeric' : null}
                 placeholder="Enter Id card Number"
                 maxLength={idCard === 'Adhar Card' ? 12 : 10}

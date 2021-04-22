@@ -8,6 +8,7 @@ import {
   Alert,
 } from 'react-native';
 
+var backHandler;
 export default function HomePage({navigation}) {
   useEffect(() => {
     const backAction = () => {
@@ -22,10 +23,7 @@ export default function HomePage({navigation}) {
       return true;
     };
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
+    backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 
     return () => backHandler.remove();
   }, []);
@@ -33,7 +31,11 @@ export default function HomePage({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.button}>
-        <TouchableOpacity onPress={() => navigation.navigate('BookTicket')}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('BookTicket');
+            // backHandler.remove();
+          }}>
           <Text style={styles.textSign}>Book Ticket</Text>
         </TouchableOpacity>
       </View>

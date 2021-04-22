@@ -18,6 +18,7 @@ export default function Payment({route, navigation}) {
     let current = new Date();
     let datetime =
       current.toLocaleTimeString() + ' ' + current.toLocaleDateString();
+    console.log(new Date().getTime());
     let otp = null;
 
     if (route.params.ticketform === 'Book & Print (Paper)') {
@@ -38,6 +39,7 @@ export default function Payment({route, navigation}) {
         datetime,
         otp,
       );
+      console.log(new Date().getTime());
     } catch (e) {
       console.log(e);
     }
@@ -135,7 +137,7 @@ export default function Payment({route, navigation}) {
                   image:
                     'https://cdn.slidesharecdn.com/ss_thumbnails/mumbailocal-130224045152-phpapp02-thumbnail-4.jpg?cb=1361681553',
                   currency: 'INR',
-                  key: 'rzp_live_39G4t1IozUX72H', // Your api key
+                  key: 'rzp_live_8lmrGx7nj3rnvI', // Your api key
                   amount: route.params.fare * 100,
                   name: `${route.params.source}-${route.params.destination}`,
                   prefill: {

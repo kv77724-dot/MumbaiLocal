@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -50,7 +50,7 @@ export default function LogIn({navigation}) {
 
   function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // console.log('Email', re.test(String(email).toLowerCase()));
+    console.log('Email', email, re.test(String(email).toLowerCase()));
     if (!re.test(String(email).toLowerCase())) {
       setEmailErr('Invalid Email');
     } else {
@@ -78,6 +78,13 @@ export default function LogIn({navigation}) {
     }
   };
 
+  const inputRef = useRef(null);
+
+  const checkIsFocusedHandler = () => {
+    const result = inputRef.current.isFocused();
+    console.log('MOved', result);
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -92,11 +99,16 @@ export default function LogIn({navigation}) {
             placeholderTextColor="#666666"
             style={styles.text_input}
             value={email}
+            ref={inputRef}
+            autoComplete="off"
+            contextMenuHidden={true}
+            textContentType="none"
             onChangeText={value => {
               setEmail(value);
               validateEmail(email);
+              console.log('Changed');
             }}
-            onSubmitEditing={() => validateEmail()}
+            onSubmitEditing={() => validateEmail(email)}
           />
           {emailErr !== null ? (
             <Text style={{color: 'red', marginVertical: 2}}>{emailErr}</Text>
@@ -153,6 +165,7 @@ export default function LogIn({navigation}) {
           <View style={styles.new_user}>
             <TouchableOpacity
               onPress={() => {
+                checkIsFocusedHandler();
                 navigation.navigate('SignUp');
               }}>
               <Text style={styles.forgot_password}>New User? Sign Up Here</Text>
