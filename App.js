@@ -13,6 +13,7 @@ import {Icon, CheckBox} from 'react-native-elements';
 import Payment from './src/components/Payment';
 import PaymentDone from './src/components/PaymentDone';
 import {HeaderBackButton} from '@react-navigation/stack';
+import ForgetPass from './src/components/ForgetPass';
 
 const AuthStack = createStackNavigator();
 const TicketStack = createStackNavigator();
@@ -195,6 +196,18 @@ export default function MainApp() {
           options={{
             title: 'Payment successful',
             headerLeft: null,
+            headerStyle: {
+              backgroundColor: '#314e52',
+            },
+            headerTintColor: 'white',
+          }}
+          headerTruncatedBackTitle
+        />
+        <AuthStack.Screen
+          name="ForgetPass"
+          component={ForgetPass}
+          options={{
+            title: 'Forget password',
             headerStyle: {
               backgroundColor: '#314e52',
             },

@@ -1,6 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from "react-native";
 
 export const login = async (email, password) => {
   let errorMessage = null;
@@ -116,3 +117,20 @@ export const ticketlist = async value => {
   // console.log(list)
   return list;
 };
+
+export const resetpass = async(email)=>{
+
+  await auth().sendPasswordResetEmail(email).then(function() {
+    Alert.alert(
+      "info",
+      "Check your email"
+    )
+  }).catch(error =>{
+    console.log(error.code);
+    Alert.alert(
+      "Alert!",
+      error.code
+    )
+
+  })
+}
